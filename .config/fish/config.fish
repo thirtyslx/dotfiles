@@ -17,9 +17,11 @@ set -U fish_user_paths $HOME/.local/bin $HOME/Applications $fish_user_paths
 ### EXPORT ###
 set fish_greeting                                 # Supresses fish's intro message
 set TERM "xterm-256color"                         # Sets the terminal type
-set EDITOR "vim"                                  # $EDITOR use Vim in terminal
-set VISUAL "vim"                                  # $VISUAL use Vim in GUI mode
+set EDITOR "emacsclient -t -a ''"                 # $EDITOR use Vim in terminal
+set VISUAL "emacsclient -t -a ''"                 # $VISUAL use Vim in GUI mode
 set BROWSER "librewolf"                           # $BROWSER use librewolf
+set -x PATH $HOME/.emacs.d/bin $PATH              # Adding doom to the PATH
+fish_vi_key_bindings                              # Sets vi keybindings instead of emacs
 
 ### SET MANPAGER
 ### Uncomment only one of these!
@@ -32,13 +34,6 @@ set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 ### "nvim" as manpager
 # set -x MANPAGER "nvim -c 'set ft=man' -"
-
-### SET EITHER DEFAULT EMACS MODE OR VI MODE ###
-function fish_user_key_bindings
-  # fish_default_key_bindings
-  fish_vi_key_bindings
-end
-### END OF VI MODE ###
 
 ### AUTOCOMPLETE AND HIGHLIGHT COLORS ###
 set fish_color_normal brcyan
@@ -247,7 +242,7 @@ alias yaysyu='yay -Syu --noconfirm'              # update standard pkgs and AUR 
 alias parsua='paru -Sua --noconfirm'             # update only AUR pkgs (paru)
 alias parsyu='paru -Syu --noconfirm'             # update standard pkgs and AUR pkgs (paru)
 alias unlock='sudo rm /var/lib/pacman/db.lck'    # remove pacman lock
-alias cleanup='sudo pacman -Rns (pacman -Qtdq)' # remove orphaned packages
+alias cleanup='sudo pacman -Rns (pacman -Qtdq)'  # remove orphaned packages
 
 # get fastest mirrors
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
@@ -333,7 +328,7 @@ alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
 alias tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
 
 # bare git repo alias for dotfiles
-alias config="/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME"
+alias cfg="/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME"
 
 # the terminal rickroll
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
@@ -343,12 +338,12 @@ alias mocp="bash -c mocp"
 
 # Common commands that are too long
 alias e="$EDITOR"
-alias v="$EDITOR"
+alias v="vim"
 alias p="pacman"
 alias ka="killall"
 
 ### Changing configs
-alias c-i3="$EDITOR ~/i3/config"
+alias c-i3="$EDITOR ~/.config/i3/config"
 alias c-polybar="$EDITOR ~/.config/polybar/config"
 alias c-fish="$EDITOR ~/.config/fish/config.fish"
 alias c-vim="$EDITOR ~/.vimrc"
