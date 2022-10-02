@@ -1,3 +1,13 @@
+#     _            ____                 _
+#    / \   ___ ___| __ ) _ __ ___  __ _| | _____ _ __
+#   / _ \ / __/ __|  _ \| '__/ _ \/ _` | |/ / _ \ '__|
+#  / ___ \\__ \__ \ |_) | | |  __/ (_| |   <  __/ |
+# /_/   \_\___/___/____/|_|  \___|\__,_|_|\_\___|_|
+#
+# http://www.gitlab.com/assbreaker/
+#
+# My moc config. Not much to see here; just some pretty standard stuff.
+
 # This is a configuration file for the MOC player.  It should be named
 # 'config' and placed in the ~/.moc directory.  As this file can specify
 # commands which invoke other applications, MOC will refuse to start if it
@@ -69,7 +79,7 @@ ReadTags = no
 #
 # Example:    MusicDir = "/home/joe/music"
 #
-MusicDir = "/home/q/Music/"
+MusicDir = "/home/q/Music/alive-outside/"
 
 # Start in the music directory by default?  If set to 'no', start
 # in the current directory by default.  A single directory on
@@ -219,7 +229,7 @@ ShowTimePercent = yes
 #
 # Example:    Theme = laras_theme
 #
-Theme = /home/q/.moc/moc_assbreaker_theme
+Theme = /home/q/.moc/themes/dracula.theme
 
 # The theme used when running on an xterm.
 #
