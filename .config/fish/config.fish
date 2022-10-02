@@ -328,7 +328,7 @@ alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
 alias tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
 
 # bare git repo alias for dotfiles
-alias cfg="/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME"
+alias config="/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME"
 
 # the terminal rickroll
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
