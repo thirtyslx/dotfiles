@@ -1,0 +1,163 @@
+#     _            ____                 _
+#    / \   ___ ___| __ ) _ __ ___  __ _| | _____ _ __
+#   / _ \ / __/ __|  _ \| '__/ _ \/ _` | |/ / _ \ '__|
+#  / ___ \\__ \__ \ |_) | | |  __/ (_| |   <  __/ |
+# /_/   \_\___/___/____/|_|  \___|\__,_|_|\_\___|_|
+#
+# http://www.gitlab.com/assbreaker/
+#
+# My sxhkd-i3 config. Not much to see here; just some pretty standard stuff.
+
+# APPS
+
+super + p; {n,t,l,f,d,x}
+    {nitrogen,telegram-desktop,lowriter,pcmanfm,discord,xkill}
+
+super + shift + Return
+    dmenu_run -fn 'HackNerdFont-13'
+
+super + d
+    dmenu_run -fn 'HackNerdFont-13'
+
+alt + d
+    rofi -show run
+
+super + y
+    rofi -show window
+
+super + e
+    emacsclient -c -a 'emacs'
+
+super + Return
+    alacritty
+
+alt + Return
+    alacritty
+
+super + w
+    librewolf
+
+super + shift + w
+    librewolf --private-window
+
+Print
+    flameshot gui
+
+# SYSTEM
+
+super + 0; {shift+s,s,r,l,h}
+    {systemctl shutdown,systemctl suspend,systemctl reboot,xlock,systemctl hibernate}
+
+super + s
+    systemctl suspend
+
+# AUDIO
+
+XF86AudioRaiseVolume
+    amixer -c 1 -- sset Master 2db+
+
+XF86AudioLowerVolume
+    amixer -c 1 -- sset Master 2db-
+
+XF86AudioMute
+    amixer -c 1 -- sset Master toggle
+
+F2
+    amixer -D pulse sset Master 5%-
+F3
+    amixer -D pulse sset Master 5%+
+F4
+    amixer -D pulse sset Master toggle
+
+XF86AudioPlay
+    playerctl play-pause
+
+XF86AudioNext
+    playerctl next
+
+XF86AudioPrev
+    playerctl previous
+
+XF86AudioStop
+    playerctl stop
+
+# MOC
+
+F1
+    mocp --toggle-pause
+ctrl + F5
+    mocp --pause
+F8
+    mocp --next
+ctrl + F6
+    mocp --previous
+
+############################
+##      i3 SPECIFIC       ##
+############################
+
+# MOVEMENT
+
+super + {h,j,k,l}
+    i3-msg focus {left,down,up,right}
+
+super + shift + {h,j,k,l}
+    i3-msg move {left,down,up,right}
+
+super + {z,x}
+    i3-msg split {v,h}
+
+super + f
+    i3-msg fullscreen toggle
+
+super + shift + space
+    i3-msg floating toggle
+
+super + space
+    i3-msg focus mode_toggle
+
+super + a
+    i3-msg focus parent
+
+# WORKSPACES
+
+super + {1-9}
+    i3-msg workspace {1-9}
+
+super + shift + {1-9}
+    i3-msg move container to workspace number {1-9}
+
+# ACTIONS
+
+super + q
+    i3-msg kill
+
+super + shift + c
+    i3-msg reload
+
+super + shift + r
+    i3-msg restart
+
+super + shift + q
+    i3-msg exit
+
+super + ctrl + {h,j,k,l}
+    i3-msg resize {grow width 2 px or 2 ppt, shrink height 2 px or 2 ppt, grow height 2 px or 2 ppt, shrink width 2 px or 2 ppt}
+
+###################################
+##      END OF i3 SPECIFIC       ##
+###################################
+
+# SCRATCHPADS
+
+super + t
+    tdrop -am -w 60% -h 60% -x 20% -y 20% -n term alacritty
+
+alt + t
+    tdrop -am -w 60% -h 60% -x 20% -y 20% -n term alacritty
+
+alt + m
+    tdrop -am -w 60% -h 60% -x 20% -y 20% -n mus alacritty
+
+alt + f
+    tdrop -am -w 60% -h 60% -x 20% -y 20% -n fm alacritty
