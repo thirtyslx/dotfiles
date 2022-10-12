@@ -18,7 +18,7 @@ set $mod Mod4
 floating_modifier $mod
 
 # font
-font pango: Hack Nerd Font 13
+font pango: Hack Nerd Font, FontAwesome 13
 
 # inner/outer gaps
 gaps inner 6
@@ -31,25 +31,30 @@ smart_gaps on
 for_window [class=".*"] border pixel 2
 
 set $ws1 1:sys
-set $ws2 2:web
+set $ws2 2:www
 set $ws3 3:chat
 set $ws4 4:dev
-set $ws5 5:wal
+set $ws5 5:vbox
 set $ws6 6:mus
-set $ws7 7:vbox
+set $ws7 7:vid
 set $ws8 8:doc
-set $ws9 9:kee
+set $ws9 9:pass
 
 # bind program to workspace and focus to them on startup:
 assign [class="librewolf"] $ws2
 assign [class="TelegramDesktop"] $ws3
 assign [class="jetbrains-pycharm-ce"] $ws4
 assign [class="discord"] $ws6
-assign [class="VirtualBox Manager"] $ws7
-assign [class="virt-manager"] $ws7
+assign [class="VirtualBox Manager"] $ws5
+assign [class="virt-manager"] $ws5
 assign [class="KeePassXC"] $ws9
 
 # set floating for apps needing it
+for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
+for_window [class="qt5ct" instance="qt5ct"] floating enable
+for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
+for_window [class="Bluetooth-sendto" instance="bluetooth-sendto"] floating enable
+for_window [window_role="About"] floating enable
 for_window [class="Yad" instance="yad"] floating enable
 for_window [class="Galculator" instance="galculator"] floating enable
 for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
@@ -58,11 +63,4 @@ for_window [class="GParted"] floating enable border normal
 for_window [class="lxappearance"] floating enable
 for_window [class="Xfburn"] floating enable
 for_window [class="Nitrogen"] floating enable
-
-# set floating for special apps
-for_window [class="Xsane" instance="xsane"] floating enable
-for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
-for_window [class="qt5ct" instance="qt5ct"] floating enable
-for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
-for_window [class="Bluetooth-sendto" instance="bluetooth-sendto"] floating enable
-for_window [window_role="About"] floating enable
+for_window [class="scratchpad" instance="scratchpad"] floating enable border pixel 0
