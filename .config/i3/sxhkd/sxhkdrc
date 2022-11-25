@@ -8,24 +8,26 @@
 #
 # My sxhkd-i3 config. Not much to see here; just some pretty standard stuff.
 
+# Restart sxhkd
+
+super + Escape
+    pkill -USR1 -x sxhkd && notify-send "sxhkd" "restarted"
+
 # APPS
 
-super + p; {n,t,f,d,x,c}
-    {nitrogen,telegram-desktop,pcmanfm,discord,xkill,galculator}
+super + r; {n,t,f,d,c,p,g,i}
+    {nitrogen,telegram-desktop,pcmanfm,discord,galculator,pycharm,gpick,flatpak run com.github.rajsolai.textsnatcher}
 
 super + shift + Return
-    dmenu_run -fn 'HackNerdFont-13'
+    dmenu_run -fn 'JetBrainsMonoNerdFont-14'
 
 super + d
-    dmenu_run -fn 'HackNerdFont-13'
-
-alt + d
-    rofi -show run
+    dmenu_run -fn 'JetBrainsMonoNerdFont-14'
 
 super + y
     rofi -show window
 
-super + e
+super + shift +  e
     emacsclient -c -a 'emacs'
 
 super + Return
@@ -37,13 +39,22 @@ super + w
 super + shift + w
     librewolf --private-window
 
+super + x
+    xkill
+
 Print
     flameshot gui
+
+ctrl + Print
+	flameshot full -p ~/Pictures/screenshots
+
+super + c
+    thunar
 
 # SYSTEM
 
 super + 0; {shift+s,s,r,l,h}
-    {systemctl shutdown,systemctl suspend,systemctl reboot,xlock,systemctl hibernate}
+    {shutdown now,systemctl suspend,systemctl reboot,xlock,systemctl hibernate}
 
 super + s
     systemctl suspend
@@ -61,10 +72,13 @@ XF86AudioMute
 
 F2
     amixer -D pulse sset Master 5%-
+    showvolume
 F3
     amixer -D pulse sset Master 5%+
+    showvolume
 F4
     amixer -D pulse sset Master toggle
+    showvolume
 
 XF86AudioPlay
     playerctl play-pause
@@ -82,16 +96,19 @@ XF86AudioStop
 
 F1
     mocp --toggle-pause
+
 ctrl + F5
     mocp --pause
+
 F8
     mocp --next
+
 ctrl + F6
     mocp --previous
 
-############################
-##      i3 SPECIFIC       ##
-############################
+#####################################
+###          i3 SPECIFIC          ###
+#####################################
 
 # MOVEMENT
 
@@ -101,8 +118,8 @@ super + {h,j,k,l}
 super + shift + {h,j,k,l}
     i3-msg move {left,down,up,right}
 
-super + {z,x}
-    i3-msg split {v,h}
+super + {z,v}
+    i3-msg split {h,v}
 
 super + f
     i3-msg fullscreen toggle
@@ -118,65 +135,11 @@ super + a
 
 # WORKSPACES
 
-#super + {1-9}
-#      i3-msg workspace {1-9}
+super + {1,2,3,4,5,6,7,8,9}
+    i3-msg workspace {1:sys,2:www,3:chat,4:dev,5:vbox,6:mus,7:vid,8:doc,9:pass}
 
-#super + shift + {1-9}
-#      i3-msg move container to workspace number {1-9}
-
-super + 1
-      i3-msg workspace 1:sys
-
-super + 2
-      i3-msg workspace 2:www
-
-super + 3
-      i3-msg workspace 3:chat
-
-super + 4
-      i3-msg workspace 4:dev
-
-super + 5
-      i3-msg workspace 5:vbox
-
-super + 6
-      i3-msg workspace 6:mus
-
-super + 7
-      i3-msg workspace 7:vid
-
-super + 8
-      i3-msg workspace 8:doc
-
-super + 9
-      i3-msg workspace 9:pass
-
-super + shift + 1
-      i3-msg move container to workspace 1:sys
-
-super + shift + 2
-      i3-msg move container to workspace  2:www
-
-super + shift + 3
-      i3-msg move container to workspace  3:chat
-
-super + shift + 4
-      i3-msg move container to workspace  4:dev
-
-super + shift + 5
-      i3-msg move container to workspace  5:vbox
-
-super + shift + 6
-      i3-msg move container to workspace  6:mus
-
-super + shift + 7
-      i3-msg move container to workspace  7:vid
-
-super + shift + 8
-      i3-msg move container to workspace  8:doc
-
-super + shift + 9
-      i3-msg move container to workspace  9:pass
+super + shift + {1,2,3,4,5,6,7,8,9}
+      i3-msg move container to workspace {1:sys,2:www,3:chat,4:dev,5:vbox,6:mus,7:vid,8:doc,9:pass}
 
 # ACTIONS
 
@@ -195,17 +158,34 @@ super + shift + q
 super + ctrl + {h,j,k,l}
     i3-msg resize {grow width 2 px or 2 ppt, shrink height 2 px or 2 ppt, grow height 2 px or 2 ppt, shrink width 2 px or 2 ppt}
 
-###################################
-##      END OF i3 SPECIFIC       ##
-###################################
+#####################################
+###       END OF i3 SPECIFIC      ###
+#####################################
 
 # SCRATCHPADS
 
 super + t
-    tdrop -am -w 60% -h 60% -x 20% -y 20% -n term kitty --class scratchpad
+    tdrop -am -w 60% -h 60% -x 20% -y 20% -n term alacritty --class=scratchpad
 
 super + m
-    tdrop -am -w 60% -h 60% -x 20% -y 20% -n mus kitty --class scratchpad bash -c mocp
+    tdrop -am -w 60% -h 60% -x 20% -y 20% -n mus alacritty --class=scratchpad -e mocp
+
+super + g
+    tdrop -am -w 60% -h 60% -x 20% -y 20% -n fm alacritty --class=scratchpad -e ranger
+
+# SCRIPTS
+
+super + Insert
+    xdotool type $(grep -v '^#' ~/.local/share/bookmarks | dmenu -i -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
+
+super + shift + Insert
+    xdotool type $(grep -v '^#' ~/.local/share/see-later-bookmarks | dmenu -i -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
 
 super + b
-    tdrop -am -w 60% -h 60% -x 20% -y 20% -n fm kitty --class scratchpad bash -c ranger
+    create-bookmark
+
+super + shift + b
+    create-bookmark-see-later
+
+super + e
+    editconfig
