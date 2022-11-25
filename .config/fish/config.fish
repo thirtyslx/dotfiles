@@ -1,39 +1,36 @@
-#     _            ____                 _             
-#    / \   ___ ___| __ ) _ __ ___  __ _| | _____ _ __ 
+#     _            ____                 _
+#    / \   ___ ___| __ ) _ __ ___  __ _| | _____ _ __
 #   / _ \ / __/ __|  _ \| '__/ _ \/ _` | |/ / _ \ '__|
-#  / ___ \\__ \__ \ |_) | | |  __/ (_| |   <  __/ |   
+#  / ___ \\__ \__ \ |_) | | |  __/ (_| |   <  __/ |
 # /_/   \_\___/___/____/|_|  \___|\__,_|_|\_\___|_|
 #
 # http://www.gitlab.com/assbreaker/
 #
 # My fish config. Not much to see here; just some pretty standard stuff.
 
-### ADDING TO THE PATH
+### ADDING TO THE PATH ###
 # First line removes the path; second line sets it.  Without the first line,
 # your path gets massive and fish becomes very slow.
 set -e fish_user_paths
-set -U fish_user_paths $HOME/.local/bin $HOME/Applications $fish_user_paths
+set -U fish_user_paths $HOME/.local/bin $fish_user_paths
+set -x PATH $HOME/.emacs.d/bin $PATH              # Adding doom to the $PATH
+set -x PATH $HOME/.scripts $PATH                  # Adding scripts to the $PATH
 
 ### EXPORT ###
 set fish_greeting                                 # Supresses fish's intro message
 set TERM "xterm-256color"                         # Sets the terminal type
-set EDITOR "emacsclient -t -a ''"                 # $EDITOR use Vim in terminal
-set VISUAL "emacsclient -t -a ''"                 # $VISUAL use Vim in GUI mode
+set EDITOR "nvim"                                 # $EDITOR use nvim in terminal
+set VISUAL "nvim"                                 # $VISUAL use nvim in GUI mode
 set BROWSER "librewolf"                           # $BROWSER use librewolf
-set -x PATH $HOME/.emacs.d/bin $PATH              # Adding doom to the PATH
 fish_vi_key_bindings                              # Sets vi keybindings instead of emacs
 
-### SET MANPAGER
-### Uncomment only one of these!
-
-### "bat" as manpager
+### MANPAGER ###
+# "bat" as manpager
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
-
-### "vim" as manpager
-# set -x MANPAGER '/bin/bash -c "vim -MRn -c \"set buftype=nofile showtabline=0 ft=man ts=8 nomod nolist norelativenumber nonu noma\" -c \"normal L\" -c \"nmap q :qa<CR>\"</dev/tty <(col -b)"'
-
-### "nvim" as manpager
-# set -x MANPAGER "nvim -c 'set ft=man' -"
+# "vim" as manpager
+#set -x MANPAGER '/bin/bash -c "vim -MRn -c \"set buftype=nofile showtabline=0 ft=man ts=8 nomod nolist norelativenumber nonu noma\" -c \"normal L\" -c \"nmap q :qa<CR>\"</dev/tty <(col -b)"'
+# "nvim" as manpager
+#set -x MANPAGER "nvim -c 'set ft=man' -"
 
 ### AUTOCOMPLETE AND HIGHLIGHT COLORS ###
 set fish_color_normal brcyan
@@ -42,72 +39,7 @@ set fish_color_command brcyan
 set fish_color_error '#ff6c6b'
 set fish_color_param brcyan
 
-### SPARK ###
-set -g spark_version 1.0.0
-
-complete -xc spark -n __fish_use_subcommand -a --help -d "Show usage help"
-complete -xc spark -n __fish_use_subcommand -a --version -d "$spark_version"
-complete -xc spark -n __fish_use_subcommand -a --min -d "Minimum range value"
-complete -xc spark -n __fish_use_subcommand -a --max -d "Maximum range value"
-
-function spark -d "sparkline generator"
-    if isatty
-        switch "$argv"
-            case {,-}-v{ersion,}
-                echo "spark version $spark_version"
-            case {,-}-h{elp,}
-                echo "usage: spark [--min=<n> --max=<n>] <numbers...>  Draw sparklines"
-                echo "examples:"
-                echo "       spark 1 2 3 4"
-                echo "       seq 100 | sort -R | spark"
-                echo "       awk \\\$0=length spark.fish | spark"
-            case \*
-                echo $argv | spark $argv
-        end
-        return
-    end
-
-    command awk -v FS="[[:space:],]*" -v argv="$argv" '
-        BEGIN {
-            min = match(argv, /--min=[0-9]+/) ? substr(argv, RSTART + 6, RLENGTH - 6) + 0 : ""
-            max = match(argv, /--max=[0-9]+/) ? substr(argv, RSTART + 6, RLENGTH - 6) + 0 : ""
-        }
-        {
-            for (i = j = 1; i <= NF; i++) {
-                if ($i ~ /^--/) continue
-                if ($i !~ /^-?[0-9]/) data[count + j++] = ""
-                else {
-                    v = data[count + j++] = int($i)
-                    if (max == "" && min == "") max = min = v
-                    if (max < v) max = v
-                    if (min > v ) min = v
-                }
-            }
-            count += j - 1
-        }
-        END {
-            n = split(min == max && max ? "▅ ▅" : "▁ ▂ ▃ ▄ ▅ ▆ ▇ █", blocks, " ")
-            scale = (scale = int(256 * (max - min) / (n - 1))) ? scale : 1
-            for (i = 1; i <= count; i++)
-                out = out (data[i] == "" ? " " : blocks[idx = int(256 * (data[i] - min) / scale) + 1])
-            print out
-        }
-    '
-end
-### END OF SPARK ###
-
-
 ### FUNCTIONS ###
-# Spark functions
-function letters
-    cat $argv | awk -vFS='' '{for(i=1;i<=NF;i++){ if($i~/[a-zA-Z]/) { w[tolower($i)]++} } }END{for(i in w) print i,w[i]}' | sort | cut -c 3- | spark | lolcat
-    printf  '%s\n' 'abcdefghijklmnopqrstuvwxyz'  ' ' | lolcat
-end
-
-function commits
-    git log --author="$argv" --format=format:%ad --date=short | uniq -c | awk '{print $1}' | spark | lolcat
-end
-
 # Functions needed for !! and !$
 function __history_previous_command
   switch (commandline -t)
@@ -135,80 +67,15 @@ else
   bind ! __history_previous_command
   bind '$' __history_previous_command_arguments
 end
-
-# Function for creating a backup file
-# ex: backup file.txt
-# result: copies file as file.txt.bak
-function backup --argument filename
-    cp $filename $filename.bak
-end
-
-# Function for copying files and directories, even recursively.
-# ex: copy DIRNAME LOCATIONS
-# result: copies the directory and all of its contents.
-function copy
-    set count (count $argv | tr -d \n)
-    if test "$count" = 2; and test -d "$argv[1]"
-	set from (echo $argv[1] | trim-right /)
-	set to (echo $argv[2])
-        command cp -r $from $to
-    else
-        command cp $argv
-    end
-end
-
-# Function for printing a column (splits input on whitespace)
-# ex: echo 1 2 3 | coln 3
-# output: 3
-function coln
-    while read -l input
-        echo $input | awk '{print $'$argv[1]'}'
-    end
-end
-
-# Function for printing a row
-# ex: seq 3 | rown 3
-# output: 3
-function rown --argument index
-    sed -n "$index p"
-end
-
-# Function for ignoring the first 'n' lines
-# ex: seq 10 | skip 5
-# results: prints everything but the first 5 lines
-function skip --argument n
-    tail +(math 1 + $n)
-end
-
-# Function for taking the first 'n' lines
-# ex: seq 10 | take 5
-# results: prints only the first 5 lines
-function take --argument number
-    head -$number
-end
-
-# Function for org-agenda
-function org-search -d "send a search string to org-mode"
-    set -l output (/usr/bin/emacsclient -a "" -e "(message \"%s\" (mapconcat #'substring-no-properties \
-        (mapcar #'org-link-display-format \
-        (org-ql-query \
-        :select #'org-get-heading \
-        :from  (org-agenda-files) \
-        :where (org-ql--query-string-to-sexp \"$argv\"))) \
-        \"
-    \"))")
-    printf $output
-end
-
 ### END OF FUNCTIONS ###
-
 
 ### ALIASES ###
 # \x1b[2J   <- clears tty
 # \x1b[1;1H <- goes to (1, 1) (start)
-alias clear='echo -en "\x1b[2J\x1b[1;1H" ; echo; echo; seq 1 (tput cols) | sort -R | spark | lolcat; echo; echo'
+#alias clear='echo -en "\x1b[2J\x1b[1;1H" ; echo; echo; seq 1 (tput cols) | sort -R | spark | lolcat; echo; echo'
+# alias clear='echo -en "\x1b[2J\x1b[1;1H" ; cat ~/.scripts/zfetch | lolcat'
 
-# root privileges
+# Root privileges
 alias doas="doas --"
 
 # navigation
@@ -219,7 +86,7 @@ alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 
 # vim and emacs
-# alias vim='nvim'
+alias vim='nvim'
 alias em='/usr/bin/emacs -nw'
 alias emacs="emacsclient -c -a 'emacs'"
 alias doomsync="~/.emacs.d/bin/doom sync"
@@ -228,15 +95,14 @@ alias doomupgrade="~/.emacs.d/bin/doom upgrade"
 alias doompurge="~/.emacs.d/bin/doom purge"
 
 # Changing "ls" to "exa"
-alias ls='exa -al --color=always --group-directories-first' # my preferred listing
-alias la='exa -a --color=always --group-directories-first'  # all files and dirs
-alias ll='exa -l --color=always --group-directories-first'  # long format
-alias lt='exa -aT --color=always --group-directories-first' # tree listing
-alias l.='exa -a | egrep "^\."'
+alias ls='exa -a --icons --color=always --group-directories-first'  # my preferred listing
+alias ll='exa -l  --icons --color=always --group-directories-first' # long format
+alias lt='exa -aT --color=always --group-directories-first'         # tree listing
+alias l.='exa -a | egrep "^\."'                                     # all dotfiles
 
 # pacman and yay
-alias pacsyu='sudo pacman -Syu'                  # update only standard pkgs
-alias pacsyyu='sudo pacman -Syyu'                # Refresh pkglist & update standard pkgs
+alias psyu='sudo pacman -Syu'                  # update only standard pkgs
+alias psyyu='sudo pacman -Syyu'                # Refresh pkglist & update standard pkgs
 alias yaysua='yay -Sua --noconfirm'              # update only AUR pkgs (yay)
 alias yaysyu='yay -Syu --noconfirm'              # update standard pkgs and AUR pkgs (yay)
 alias parsua='paru -Sua --noconfirm'             # update only AUR pkgs (paru)
@@ -244,7 +110,7 @@ alias parsyu='paru -Syu --noconfirm'             # update standard pkgs and AUR 
 alias unlock='sudo rm /var/lib/pacman/db.lck'    # remove pacman lock
 alias cleanup='sudo pacman -Rns (pacman -Qtdq)'  # remove orphaned packages
 
-# get fastest mirrors
+# Get fastest mirrors
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
 alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
 alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
@@ -255,12 +121,12 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
-# confirm before overwriting something
+# Confirm before overwriting something
 alias cp="cp -i"
 alias mv='mv -i'
 alias rm='rm -i'
 
-# adding flags
+# Adding flags
 alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
 alias lynx='lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss -vikeys'
@@ -291,7 +157,7 @@ alias push='git push origin'
 alias tag='git tag'
 alias newtag='git tag -a'
 
-# get error messages from journalctl
+# Get error messages from journalctl
 alias jctl="journalctl -p 3 -xb"
 
 # gpg encryption
@@ -299,16 +165,6 @@ alias jctl="journalctl -p 3 -xb"
 alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
 # receive the key of a developer
 alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
-
-# Play audio files in current dir by type
-alias playwav='deadbeef *.wav'
-alias playogg='deadbeef *.ogg'
-alias playmp3='deadbeef *.mp3'
-
-# Play video files in current dir by type
-alias playavi='vlc *.avi'
-alias playmov='vlc *.mov'
-alias playmp4='vlc *.mp4'
 
 # youtube-dl
 alias yta-aac="youtube-dl --extract-audio --audio-format aac "
@@ -320,8 +176,12 @@ alias yta-opus="youtube-dl --extract-audio --audio-format opus "
 alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis "
 alias yta-wav="youtube-dl --extract-audio --audio-format wav "
 alias ytv-best="youtube-dl -f bestvideo+bestaudio "
+alias yt="yt-dlp --embed-metadata -i"
+alias aria2c="aria2c --file-allocation=none -c -s 15 -x 15"
+alias yta="youtube-dl --extract-audio --audio-quality 0 --audio-format opus --add-metadata -o '%(artist)s - %(title)s.%(ext)s'"
+alias ytap="youtube-dl --extract-audio --audio-quality 0 --audio-format opus --add-metadata -o '%(playlist)s/%(playlist_index)02d. %(artist)s - %(title)s.%(ext)s'"
 
-# switch between shells
+# Switch between shells
 # I do not recommend switching default SHELL from bash.
 alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'"
 alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
@@ -339,15 +199,21 @@ alias mocp="bash -c mocp"
 # Common commands that are too long
 alias e="$EDITOR"
 alias v="vim"
-alias p="pacman"
 alias ka="killall"
+alias xp="xprop | grep WM_CLASS"
+alias p="sudo pacman"
+alias r="/bin/rm"
+alias g="git"
+alias s="startx"
 
-### Changing configs
-alias c-i3="$EDITOR ~/.config/i3/config"
-alias c-polybar="$EDITOR ~/.config/polybar/config"
-alias c-fish="$EDITOR ~/.config/fish/config.fish"
-alias c-vim="$EDITOR ~/.vimrc"
+# Make multiple directorys at once
+alias mkd="mkdir -pv"
 
-### SETTING THE STARSHIP PROMPT ###
+### FAST CDs ###
+alias sc="cd ~/.scripts"
+
+# Copy the last command
+alias c='echo "$(history | head -2 | sed "s/  [0-9]*  //;2d")" > /tmp/cmdoutput && cat /tmp/cmdoutput | xsel -b && notify-send "Terminal" "Ouput Copied"'
+
+# Starship promt
 starship init fish | source
-
