@@ -1,7 +1,7 @@
-#     _            ____                 _             
-#    / \   ___ ___| __ ) _ __ ___  __ _| | _____ _ __ 
+#     _            ____                 _
+#    / \   ___ ___| __ ) _ __ ___  __ _| | _____ _ __
 #   / _ \ / __/ __|  _ \| '__/ _ \/ _` | |/ / _ \ '__|
-#  / ___ \\__ \__ \ |_) | | |  __/ (_| |   <  __/ |   
+#  / ___ \\__ \__ \ |_) | | |  __/ (_| |   <  __/ |
 # /_/   \_\___/___/____/|_|  \___|\__,_|_|\_\___|_|
 #
 # http://www.gitlab.com/assbreaker/
@@ -27,9 +27,13 @@ gaps outer 0
 # no gaps with 1 window opened
 smart_gaps on
 
+# no borders with 1 window opened
+smart_borders on
+
 # no window title
 for_window [class=".*"] border pixel 2
 
+# workspaces
 set $ws1 1:sys
 set $ws2 2:www
 set $ws3 3:chat
@@ -40,27 +44,30 @@ set $ws7 7:vid
 set $ws8 8:doc
 set $ws9 9:pass
 
-# bind program to workspace and focus to them on startup:
-assign [class="librewolf"] $ws2
+# bind program to workspace
 assign [class="TelegramDesktop"] $ws3
-assign [class="jetbrains-pycharm-ce"] $ws4
-assign [class="discord"] $ws6
 assign [class="VirtualBox Manager"] $ws5
 assign [class="virt-manager"] $ws5
+assign [class="obs"] $ws7
 assign [class="KeePassXC"] $ws9
 
 # set floating for apps needing it
+for_window [window_role="About"] floating enable
+for_window [class="scratchpad" instance="scratchpad"] floating enable border pixel 0
 for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
 for_window [class="qt5ct" instance="qt5ct"] floating enable
 for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
 for_window [class="Bluetooth-sendto" instance="bluetooth-sendto"] floating enable
-for_window [window_role="About"] floating enable
 for_window [class="Yad" instance="yad"] floating enable
 for_window [class="Galculator" instance="galculator"] floating enable
-for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
-for_window [class="main.py" instance="main.py"] floating enable
+for_window [class="main.py"] floating enable
+for_window [class="main"] floating enable
 for_window [class="GParted"] floating enable border normal
-for_window [class="lxappearance"] floating enable
+for_window [class="Lxappearance"] floating enable
 for_window [class="Xfburn"] floating enable
 for_window [class="Nitrogen"] floating enable
-for_window [class="scratchpad" instance="scratchpad"] floating enable border pixel 0
+for_window [class="Skype"] floating enable
+for_window [class="Gpick"] floating enable
+for_window [class="bottles"] floating enable
+for_window [class="Com.github.rajsolai.textsnatcher"] floating enable
+for_window [class="Kvantum Manager"] floating enable
