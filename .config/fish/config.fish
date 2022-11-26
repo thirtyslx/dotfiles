@@ -205,6 +205,7 @@ alias p="sudo pacman"
 alias r="/bin/rm"
 alias g="git"
 alias s="startx"
+alias c="clear"
 
 # Make multiple directorys at once
 alias mkd="mkdir -pv"
@@ -213,7 +214,7 @@ alias mkd="mkdir -pv"
 alias sc="cd ~/.scripts"
 
 # Copy the last command
-alias c='echo "$(history | head -2 | sed "s/  [0-9]*  //;2d")" > /tmp/cmdoutput && cat /tmp/cmdoutput | xsel -b && notify-send "Terminal" "Ouput Copied"'
+alias lc='echo "$(history | head -2 | sed "s/  [0-9]*  //;2d")" > /tmp/cmdoutput && cat /tmp/cmdoutput | xsel -b && notify-send "Terminal" "Last Command Copied"'
 
 # Starship promt
 starship init fish | source
