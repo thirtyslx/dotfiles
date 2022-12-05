@@ -10,7 +10,7 @@ echo "$(find . -type d)" | while IFS=$"\n" read -r dir; do
     if [ "$dir" != "." ]; then
         cd "$dir"
         id3 -2 -m "%n. %a - %t.opus" || id3 -2 -m "%a - %t.opus"
-        id3 -2 -m "* - %l.opus" || id3 -2 -l "$(printf '%s\n' "${PWD##*/}")" "*.opus"
+        id3 -2 -l "$(printf '%s\n' "${PWD##*/}")" "*.opus"
         cd ..
     fi
 done
