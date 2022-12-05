@@ -26,7 +26,7 @@ set incsearch            " Incremental search
 set ignorecase           " Ingore case in search
 set smartcase            " Consider case if there is a upper case character
 set scrolloff=12         " Minimum number of lines to keep above and below the cursor
-set colorcolumn=80       " Draws a line at the given line to keep aware of the line size
+set colorcolumn=100      " Draws a line at the given line to keep aware of the line size
 set signcolumn=yes       " Add a column on the left. Useful for linting
 set cmdheight=1          " Give more space for displaying messages
 set updatetime=100       " Time in miliseconds to consider the changes
@@ -65,6 +65,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'mg979/vim-visual-multi'
 Plug 'tc50cal/vim-terminal'
 Plug 'preservim/tagbar'
+Plug 'neoclide/coc.nvim'
 " Plug 'dracula/vim', { 'as': 'dracula' }
 " Plug 'rafi/awesome-vim-colorschemes'
 
@@ -80,8 +81,12 @@ colorscheme onedark
 " Map leader to Space
 let mapleader = " "
 
+" Map Caps Lock to Escape
+au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+au VimLeave * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
+
 " Toggle NerdTree
-nnoremap <Leader>f :NERDTreeToggle<CR>
+nnoremap <Leader>n :NERDTreeToggle<CR>
 
 " Remap splits navigation to just Ctrl + hjkl
 nnoremap <C-h> <C-w>h
@@ -90,10 +95,10 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " Adjusing split sizes with Shift + hjkl
-noremap <silent> <S-h> :vertical resize -5<CR>
-noremap <silent> <S-j> :resize +5<CR>
-noremap <silent> <S-k> :resize -5<CR>
-noremap <silent> <S-l> :vertical resize +5<CR>
+noremap <silent> <A-h> :vertical resize -5<CR>
+noremap <silent> <A-j> :resize +5<CR>
+noremap <silent> <A-k> :resize -5<CR>
+noremap <silent> <A-l> :vertical resize +5<CR>
 
 " Change 2 split windows from vert to horiz or horiz to vert
 nnoremap <Leader>th <C-w>t<C-w>H
@@ -117,6 +122,17 @@ nmap <leader>bk <C-w>cab> <gv
 
 " Tagbar
 map <leader>t :TagbarToggle<CR>
+
+" Tabs
+nnoremap <C-t> :tabnew<CR>
+nnoremap <C-c> :tabclose<CR>
+nnoremap <S-k> :tabnext<CR>
+nnoremap <S-j> :tabprev<CR>
+nnoremap <S-h> :tabfirst<CR>
+nnoremap <S-l> :tablast<CR>
+
+" Select all
+nnoremap <leader>a gg<S-v><S-g>
 
 "#####################################################
 "################         LETs        ################
@@ -156,6 +172,9 @@ autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
 " Restore place in file from previous session
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" Disable Coc
+autocmd BufReadPost * silent CocDisable
 
 "#####################################################
 "################      FUNCTIONS      ################
@@ -203,3 +222,11 @@ function! XTermPasteBegin()
 endfunction
 
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+" Autoinstall Vim-Plug
+if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
+	echo "Downloading junegunn/vim-plug to manage plugins..."
+	silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
+	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+	autocmd VimEnter * PlugInstall
+endif
