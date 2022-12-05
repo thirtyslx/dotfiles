@@ -130,10 +130,10 @@ super + a
 # WORKSPACES
 
 super + {1,2,3,4,5,6,7,8,9}
-    i3-msg workspace {1:sys,2:www,3:chat,4:dev,5:vbox,6:mus,7:vid,8:doc,9:pass}
+    i3-msg workspace {1:dev,2:www,3:chat,4:sys,5:vbox,6:mus,7:vid,8:doc,9:pass}
 
 super + shift + {1,2,3,4,5,6,7,8,9}
-      i3-msg move container to workspace {1:sys,2:www,3:chat,4:dev,5:vbox,6:mus,7:vid,8:doc,9:pass}
+      i3-msg move container to workspace {1:dev,2:www,3:chat,4:sys,5:vbox,6:mus,7:vid,8:doc,9:pass}
 
 # ACTIONS
 

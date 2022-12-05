@@ -34,10 +34,10 @@ smart_borders on
 for_window [class=".*"] border pixel 2
 
 # workspaces
-set $ws1 1:sys
+set $ws1 1:dev
 set $ws2 2:www
 set $ws3 3:chat
-set $ws4 4:dev
+set $ws4 4:sys
 set $ws5 5:vbox
 set $ws6 6:mus
 set $ws7 7:vid

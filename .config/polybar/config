@@ -216,10 +216,10 @@ fuzzy-match = false
 ;ws-icon-9 = 10;
 ;ws-icon-default = " "
 
-ws-icon-0 = 1:sys;
+ws-icon-0 = 1:dev;
 ws-icon-1 = 2:www;
 ws-icon-2 = 3:chat;
-ws-icon-3 = 4:dev;
+ws-icon-3 = 4:sys;
 ws-icon-4 = 5:vbox;
 ws-icon-5 = 6:mus;
 ws-icon-6 = 7:vid;
