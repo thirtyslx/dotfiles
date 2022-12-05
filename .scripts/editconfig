@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# Script for editing configs
+
+editor="alacritty -e nvim"
+configs="
+alacritty       ~/.config/alacritty/alacritty.yml
+bspwm           ~/.config/bspwm/bspwmrc
+btop            ~/.config/btop/btop.conf
+dunst           ~/.config/dunst/dunstrc
+fish            ~/.config/fish/config
+i3              ~/.config/i3/config
+kitty           ~/.config/kitty/kitty.conf
+neofetch        ~/.config/neofetch/config.conf
+nvim            ~/.config/nvim/init.vim
+picom           ~/.config/picom/picom.conf
+polybar         ~/.config/polybar/config
+rofi            ~/.config/rofi/config.rasi
+xmobar          ~/.config/xmobar/xmobarrc
+xmonad          ~/.config/xmonad/xmonad.hs
+starship        ~/.config/starship.toml
+sxhkd-i3        ~/.config/i3/sxhkd/sxhkdrc
+moc             ~/.moc/config
+bash            ~/.bashrc
+vim             ~/.vimrc
+xinitrc         ~/.xinitrc
+zsh             ~/.zshrc
+editconfig      ~/.scripts/editconfig
+autostart-i3    ~/.config/i3/autostart.sh
+ranger          ~/.config/ranger/rc.conf
+"
+choice="$(echo "$configs" | awk 'NR>1' | sort | dmenu -i -l 50 -p 'Edit config:' -fn 'JetBrainsMonoNerdFont-14' | awk '{print $NF}')"
+
+if [ "$choice" != "" ]; then
+    eval "$editor $choice"
+fi
