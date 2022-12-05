@@ -86,6 +86,11 @@ shopt -s checkwinsize # checks term size when bash regains control
 # root privileges
 alias doas="doas --"
 
+# Sudo not required for some system commands
+for command in mount umount sv updatedb su shutdown poweroff reboot; do
+	alias $command="sudo $command"
+done; unset command
+
 # Navigation up
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -165,8 +170,6 @@ alias push='git push origin'
 alias stat='git status'     # 'status' is protected name so using 'stat' instead
 alias tag='git tag'
 alias newtag='git tag -a'
-alias gpom='git push origin main'
-alias cpom='config push origin main'
 
 # get error messages from journalctl
 alias jctl="journalctl -p 3 -xb"
