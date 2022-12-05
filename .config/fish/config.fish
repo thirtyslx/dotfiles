@@ -238,5 +238,8 @@ alias audio="pactl info | grep 'Server Name'"
 # Largest files in directory
 alias ducks="du -cks * | sort -rn | head"
 
+# Logout
+alias logout="pkill -KILL -u $USER"
+
 ### STARSHIP PROMT ###
 eval (starship init fish)
