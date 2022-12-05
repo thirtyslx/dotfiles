@@ -15,11 +15,8 @@ super + Escape
 
 # APPS
 
-super + r; {n,t,f,d,c,p,g,i}
-    {nitrogen,telegram-desktop,pcmanfm,discord,galculator,pycharm,gpick,flatpak run com.github.rajsolai.textsnatcher}
-
-super + shift + Return
-    dmenu_run -fn 'JetBrainsMonoNerdFont-14'
+super + r; {n,t,f,d,c,p,g,i,o}
+    {nitrogen,telegram-desktop,pcmanfm,discord,galculator,pycharm,gpick,flatpak run com.github.rajsolai.textsnatcher,obs}
 
 super + d
     dmenu_run -fn 'JetBrainsMonoNerdFont-14'
@@ -48,8 +45,13 @@ Print
 ctrl + Print
 	flameshot full -p ~/Pictures/screenshots
 
-super + c
+super + g
     thunar
+
+# Close all notifications
+
+ctrl + space
+    dunstctl close-all
 
 # SYSTEM
 
@@ -61,15 +63,14 @@ super + s
 
 # AUDIO
 
-F2
-    amixer -D pulse sset Master 5%-
-    showvolume
-F3
-    amixer -D pulse sset Master 5%+
-    showvolume
-F4
-    amixer -D pulse sset Master toggle
-    showvolume
+ctrl + F2
+    amixer -D pulse sset Master 5%-; dunstctl close-all; showvolume
+
+ctrl + F3
+    amixer -D pulse sset Master 5%+; dunstctl close-all; showvolume
+
+ctrl + F4
+    amixer -D pulse sset Master toggle; dunstctl close-all; showvolume
 
 # PLAYER
 
@@ -139,9 +140,6 @@ super + shift + {1,2,3,4,5,6,7,8,9}
 super + q
     i3-msg kill
 
-super + shift + c
-    i3-msg reload
-
 super + shift + r
     i3-msg restart
 
@@ -163,8 +161,14 @@ super + t
 super + m
     tdrop -am -w 60% -h 60% -x 20% -y 20% -n mus alacritty --class=scratchpad -e mocp
 
-super + g
+super + shift + m
+    alacritty -e mocp
+
+super + c
     tdrop -am -w 60% -h 60% -x 20% -y 20% -n fm alacritty --class=scratchpad -e ranger
+
+super + shift + c
+    alacritty -e ranger
 
 # SCRIPTS
 
@@ -175,10 +179,7 @@ super + shift + Insert
     xdotool type $(grep -v '^#' ~/.local/share/see-later-bookmarks | dmenu -i -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
 
 super + b
-    create-bookmark
-
-super + shift + b
-    create-bookmark-see-later
+    bookmarkthis
 
 super + e
     editconfig
