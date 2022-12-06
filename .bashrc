@@ -26,8 +26,8 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 ### SET VI MODE ###
 set -o vi
-bind -m vi-command 'Control-l: clear-screen'
-bind -m vi-insert 'Control-l: clear-screen'
+bind -m vi-command "Control-l: clear-screen"
+bind -m vi-insert "Control-l: clear-screen"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -36,7 +36,7 @@ bind -m vi-insert 'Control-l: clear-screen'
 bind "set completion-ignore-case on"
 
 ### PROMPT ###
-export PS1="\e[1;34m \w\e[m\e[0;35m $ \e[m"
+#export PS1="\e[1;34m \w\e[m\e[0;35m $ \e[m"
 
 ### PATH ###
 if [ -d "$HOME/.bin" ] ;
@@ -92,10 +92,11 @@ for command in mount umount sv updatedb su shutdown poweroff reboot; do
 done; unset command
 
 # Navigation up
-alias ..='cd ..'
-alias ...='cd ../..'
-alias .3='cd ../../..'
-alias .4='cd ../../../..'
+alias ..="cd .."
+alias .2="cd ../.."
+alias .3="cd ../../.."
+alias .4="cd ../../../.."
+alias .5="cd ../../../.."
 
 # vim and emacs
 alias vim="nvim"
@@ -107,20 +108,20 @@ alias doomupgrade="~/.emacs.d/bin/doom upgrade"
 alias doompurge="~/.emacs.d/bin/doom purge"
 
 # Changing "ls" to "exa"
-alias ls='exa -a --icons --color=always --group-directories-first'  # my preferred listing
-alias ll='exa -l  --icons --color=always --group-directories-first' # long format
-alias lt='exa -aT --color=always --group-directories-first'         # tree listing
-alias l.='exa -a | egrep "^\."'                                     # all dotfiles
+alias ls="exa -a --icons --color=always --group-directories-first"  # my preferred listing
+alias ll="exa -l  --icons --color=always --group-directories-first" # long format
+alias lt="exa -aT --color=always --group-directories-first"         # tree listing
+alias l.="exa -a | egrep '^\.'"                                     # all dotfiles
 
 # pacman and yay
-alias psyu='sudo pacman -Syu'                    # update only standard pkgs
-alias psyyu='sudo pacman -Syyu'                  # Refresh pkglist & update standard pkgs
-alias yaysua='yay -Sua --noconfirm'              # update only AUR pkgs (yay)
-alias yaysyu='yay -Syu --noconfirm'              # update standard pkgs and AUR pkgs (yay)
-alias parsua='paru -Sua --noconfirm'             # update only AUR pkgs (paru)
-alias parsyu='paru -Syu --noconfirm'             # update standard pkgs and AUR pkgs (paru)
-alias unlock='sudo rm /var/lib/pacman/db.lck'    # remove pacman lock
-alias cleanup='sudo pacman -Rns (pacman -Qtdq)'  # remove orphaned packages
+alias psyu="sudo pacman -Syu"                    # update only standard pkgs
+alias psyyu="sudo pacman -Syyu"                  # Refresh pkglist & update standard pkgs
+alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs (yay)
+alias yaysyu="yay -Syu --noconfirm"              # update standard pkgs and AUR pkgs (yay)
+alias parsua="paru -Sua --noconfirm"             # update only AUR pkgs (paru)
+alias parsyu="paru -Syu --noconfirm"             # update standard pkgs and AUR pkgs (paru)
+alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
+alias cleanup="sudo pacman -Rns (pacman -Qtdq)"  # remove orphaned packages
 
 # get fastest mirrors
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
@@ -129,47 +130,47 @@ alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/p
 alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 
 # Colorize output
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias pacman='pacman --color always'
-alias ip='ip -color=auto'
+alias grep="grep --color=auto"
+alias egrep="egrep --color=auto"
+alias fgrep="fgrep --color=auto"
+alias pacman="pacman --color always"
+alias ip="ip -color=auto"
 
 # confirm before overwriting something
 alias cp="cp -i"
-alias mv='mv -i'
-alias rm='rm -i'
+alias mv="mv -i"
+alias rm="rm -i"
 
 # Adding flags
-alias df='df -h'                          # human-readable sizes
-alias free='free -m'                      # show sizes in MB
-alias lynx='lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss -vikeys'
-alias ncmpcpp='ncmpcpp ncmpcpp_directory=$HOME/.config/ncmpcpp/'
-alias mocp='mocp -M "$XDG_CONFIG_HOME"/moc -O MOCDir="$XDG_CONFIG_HOME"/moc'
+alias df="df -h"                          # human-readable sizes
+alias free="free -m"                      # show sizes in MB
+alias lynx="lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss -vikeys"
+alias ncmpcpp="ncmpcpp ncmpcpp_directory=$HOME/.config/ncmpcpp/"
+alias mocp="mocp -M "$XDG_CONFIG_HOME"/moc -O MOCDir="$XDG_CONFIG_HOME"/moc"
 
 # ps
 alias psa="ps auxf"
 alias psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
-alias psmem='ps auxf | sort -nr -k 4'
-alias pscpu='ps auxf | sort -nr -k 3'
+alias psmem="ps auxf | sort -nr -k 4"
+alias pscpu="ps auxf | sort -nr -k 3"
 
 # Merge Xresources
-alias merge='xrdb -merge ~/.Xresources'
+alias merge="xrdb -merge ~/.Xresources"
 
 # git
-alias add='git add'
-alias addup='git add -u'
-alias addall='git add .'
-alias branch='git branch'
-alias checkout='git checkout'
-alias clone='git clone'
-alias commit='git commit -m'
-alias fetch='git fetch'
-alias pull='git pull origin'
-alias push='git push origin'
-alias stat='git status'     # 'status' is protected name so using 'stat' instead
-alias tag='git tag'
-alias newtag='git tag -a'
+alias add="git add"
+alias addup="git add -u"
+alias addall="git add ."
+alias branch="git branch"
+alias checkout="git checkout"
+alias clone="git clone"
+alias commit="git commit -m"
+alias fetch="git fetch"
+alias pull="git pull origin"
+alias push="git push origin"
+alias stat="git status"     # 'status' is protected name so using 'stat' instead
+alias tag="git tag"
+alias newtag="git tag -a"
 
 # get error messages from journalctl
 alias jctl="journalctl -p 3 -xb"
@@ -209,7 +210,7 @@ alias togdm="sudo pacman -S gdm --noconfirm --needed ; sudo systemctl enable gdm
 alias config="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"
 
 # the terminal rickroll
-alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
+alias rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash"
 
 # Common commands that are too long
 alias e="$EDITOR"
@@ -239,7 +240,7 @@ alias userlist="cut -d: -f1 /etc/passwd | sort"
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 
 # Check for new fonts
-alias update-fc='sudo fc-cache -fv'
+alias update-fc="sudo fc-cache -fv"
 
 # Hardware information
 alias hw="hwinfo --short"
@@ -254,4 +255,4 @@ alias ducks="du -cks * | sort -rn | head"
 alias logout="pkill -KILL -u $USER"
 
 ### STARSHIP PROMT ###
-# eval "$(starship init bash)"
+eval "$(starship init bash)"
