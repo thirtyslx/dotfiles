@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Script for adding song to the playlist
+
+ln "$2" "/home/q/Music/playlists/$1/"

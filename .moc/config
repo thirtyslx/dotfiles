@@ -294,7 +294,6 @@ AutoLoadLyrics = yes
 # Example:    Keymap = my_keymap
 #
 Keymap = /home/q/.moc/vimkeymap
-# Keymap = /usr/share/doc/moc/keymap.example
 
 # Use ASCII rather than graphic characters for drawing lines.  This
 # helps on some terminals.
@@ -537,7 +536,7 @@ Layout1 = directory(0,0,100%,100%):playlist(0%,0,FILL,100%)
 #             ExecCommand2 = "/home/joe/now_playing %I"
 #
 # Adding music to playlist
-ExecCommand1 = "ln %f /home/q/Music/playlists/alive-outside/"
+ExecCommand1 = "addsong alive-outside %f"
 #ExecCommand2 =
 #ExecCommand3 =
 #ExecCommand4 =
