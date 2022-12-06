@@ -71,7 +71,7 @@
 # within which it was originally started.
 
 # Show file titles (title, author, album) instead of file names?
-ReadTags = no
+ReadTags = yes
 
 # In which directory do you store your music files?  If you specify it
 # you will be able to jump straight to this directory with the '-m'
@@ -84,7 +84,7 @@ MusicDir = "/home/q/Music/alive-outside/"
 # Start in the music directory by default?  If set to 'no', start
 # in the current directory by default.  A single directory on
 # the command line takes precedence.
-StartInMusicDir = yes
+StartInMusicDir = no
 
 # How to sort?  FileName is the option's only value for now.
 #Sort = FileName
@@ -113,6 +113,8 @@ Shuffle = yes
 #                     documentation for more information.)
 #
 #FormatString = "%(n:%n :)%(a:%a - :)%(t:%t:)%(A: \(%A\):)"
+#FormatString = "%(n:%n. :)%(a:%a - :)%(t:%t:)"
+FormatString = "%(a:%a - :)%(t:%t:)"
 
 # Input and output buffer sizes (in kilobytes).
 #InputBuffer = 512                  # Minimum value is 32KB
@@ -193,7 +195,7 @@ Shuffle = yes
 #ShowHiddenFiles = no
 
 # Hide file name extensions?
-HideFileExtension = yes
+HideFileExtension = no
 
 # Show file format in menu?
 ShowFormat = no
@@ -240,7 +242,7 @@ Theme = /home/q/.moc/themes/dracula.theme
 # Should MOC try to autoload the default lyrics file for an audio?  (The
 # default lyrics file is a text file with the same file name as the audio
 # file name with any trailing "extension" removed.)
-#AutoLoadLyrics = yes
+AutoLoadLyrics = yes
 
 # MOC directory (where pid file, socket and state files are stored).
 # You can use ~ at the beginning.
@@ -291,7 +293,8 @@ Theme = /home/q/.moc/themes/dracula.theme
 #
 # Example:    Keymap = my_keymap
 #
-#Keymap =
+Keymap = /home/q/.moc/vimkeymap
+# Keymap = /usr/share/doc/moc/keymap.example
 
 # Use ASCII rather than graphic characters for drawing lines.  This
 # helps on some terminals.
@@ -305,8 +308,8 @@ Theme = /home/q/.moc/themes/dracula.theme
 #             Fastdir3 = /mp3/rap
 #             Fastdir4 = /mp3/etc
 #
-#Fastdir1 =
-#Fastdir2 =
+Fastdir1 = /home/q/Music/playlists/alive-outside
+Fastdir2 = /home/q/Music/playlists/alive-outside-old
 #Fastdir3 =
 #Fastdir4 =
 #Fastdir5 =
@@ -487,7 +490,7 @@ Theme = /home/q/.moc/themes/dracula.theme
 #             and the directory menu at the bottom.  Playlist will
 #             occupy 10 lines and the directory menu the rest.
 #
-Layout1 = directory(0,0,100%,100%):playlist(50%,0,FILL,100%)
+Layout1 = directory(0,0,100%,100%):playlist(0%,0,FILL,100%)
 #Layout2 = directory(0,0,100%,100%):playlist(0,0,100%,100%)
 #Layout3 = ""
 
@@ -533,7 +536,8 @@ Layout1 = directory(0,0,100%,100%):playlist(50%,0,FILL,100%)
 # Examples:   ExecCommand1 = "cp %f /mnt/usb_drive"
 #             ExecCommand2 = "/home/joe/now_playing %I"
 #
-#ExecCommand1 =
+# Adding music to playlist
+ExecCommand1 = "ln %f /home/q/Music/playlists/alive-outside/"
 #ExecCommand2 =
 #ExecCommand3 =
 #ExecCommand4 =
@@ -562,7 +566,7 @@ Layout1 = directory(0,0,100%,100%):playlist(50%,0,FILL,100%)
 #SetScreenTitle = yes
 
 # Display full paths instead of just file names in the playlist.
-#PlaylistFullPaths = yes
+PlaylistFullPaths = no
 
 # The following setting describes how block markers are displayed in
 # the play time progress bar.  Its value is a string of exactly three
@@ -684,7 +688,7 @@ Layout1 = directory(0,0,100%,100%):playlist(50%,0,FILL,100%)
 # a song starts playing regardless of whether or not it is just repeating.
 # Otherwise the command will only be executed when a different song is
 # started.
-#RepeatSongChange = no
+RepeatSongChange = yes
 
 # Run the OnStop command (full path, no arguments) when MOC changes state
 # to stopped (i.e., when user stopped playing or changes a song).
