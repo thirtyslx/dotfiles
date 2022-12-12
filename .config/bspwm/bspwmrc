@@ -42,7 +42,7 @@ bspc config presel_feedback_color	      "#bd93f9"
 bspc config urgent_border_color 	      "#ff5555"
 
 # Window Rules
-# bspc rule -r "*"
+bspc rule -r "*"
 bspc rule -a "TelegramDesktop" desktop="^3"
 bspc rule -a "VirtualBox Manager" desktop="^5"
 bspc rule -a "Virt-manager" desktop="^5"
