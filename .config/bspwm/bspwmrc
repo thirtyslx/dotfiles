@@ -4,7 +4,7 @@
 lxsession &
 nitrogen --restore &
 pgrep -x xcompmgr > /dev/null || xcompmgr &
-pkill -USR1 -x sxhkd &
+sxhkd -c $HOME/.config/bspwm/sxhkd/sxhkdrc || pkill -USR1 -x sxhkd &
 dunst --config $HOME/.config/dunst/dunstrc &
 $HOME/.config/polybar/bsplaunch.sh &
 setxkbmap -model pc104 -layout us,ru -variant ,, -option grp:alt_shift_toggle
@@ -42,7 +42,7 @@ bspc config presel_feedback_color	      "#bd93f9"
 bspc config urgent_border_color 	      "#ff5555"
 
 # Window Rules
-bspc rule -r "*"
+# bspc rule -r "*"
 bspc rule -a "TelegramDesktop" desktop="^3"
 bspc rule -a "VirtualBox Manager" desktop="^5"
 bspc rule -a "Virt-manager" desktop="^5"
