@@ -245,7 +245,7 @@ label-mode-background = #FFBB00
 ;   %output%
 ; Default: %icon%  %name%
 ; focused = Active workspace on focused monitor
-label-focused = %icon%  %name%
+label-focused = %icon% %name%
 label-focused-background = ${colors.background}
 label-focused-foreground = ${colors.foreground}
 label-focused-underline = ${colors.focused}
@@ -284,8 +284,176 @@ format-foreground = ${colors.foreground}
 format-background = ${colors.background}
 
 ################################################################################
-###############################################################################
-############                       MODULES ARROWS                     ############
+################################################################################
+############                  MAINBAR-BSPWM                         ############
+################################################################################
+################################################################################
+
+[bar/mainbar-bspwm]
+;https://github.com/jaagr/polybar/wiki/Configuration
+
+monitor = ${env:MONITOR}
+;monitor-fallback = HDMI1
+monitor-strict = false
+override-redirect = false
+bottom = false
+fixed-center = true
+width = 100%
+height = 24
+;offset-x = 1%
+;offset-y = 1%
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+; Background gradient (vertical steps)
+;   background-[0-9]+ = #aarrggbb
+;background-0 =
+
+radius = 0.0
+line-size = 2
+line-color = #000000
+
+border-size = 0
+;border-left-size = 25
+;border-right-size = 25
+;border-top-size = 0
+;border-bottom-size = 25
+border-color = #000000
+
+padding-left = 1
+padding-right = 1
+
+module-margin-left = 0
+module-margin-right = 0
+
+;https://github.com/jaagr/polybar/wiki/Fonts
+font-0 = "JetBrains Mono Nerd Font:size=13;2"
+font-1 = "Ubuntu Mono derivative Powerline:size=17;3"
+font-2 = "FontAwesome:size=15;3"
+
+modules-left = bspwm xwindow
+modules-center =
+modules-right = arrow3 moc arrow1 uptime arrow2 arch-aur-updates arrow1 networkspeedup networkspeeddown arrow2 filesystem2 arrow1 memory2 arrow2 cpu2 arrow1 pulseaudio arrow2 xkeyboard arrow1 date arrow2
+; modules-right = arrow4 uptime arrow2 arch-aur-updates arrow1 networkspeedup networkspeeddown arrow2 filesystem2 arrow1 memory2 arrow2 cpu2 arrow1 pulseaudio arrow2 xkeyboard arrow1 date arrow2
+
+separator =
+
+;dim-value = 1.0
+
+; tray-position = right
+tray-position = none
+tray-detached = false
+tray-maxsize = 20
+tray-background = ${colors.powerline1}
+tray-offset-x = -4.9
+tray-offset-y = 0
+tray-padding = 4
+tray-scale = 1.0
+
+#i3: Make the bar appear below windows
+;wm-restack = i3
+;override-redirect = true
+
+; Enable support for inter-process messaging
+; See the Messaging wiki page for more details.
+enable-ipc = true
+
+; Fallback click handlers that will be called if
+; there's no matching module handler found.
+click-left =
+click-middle =
+click-right =
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+double-click-left =
+double-click-middle =
+double-click-right =
+
+; Requires polybar to be built with xcursor support (xcb-util-cursor)
+; Possible values are:
+; - default   : The default pointer as before, can also be an empty string (default)
+; - pointer   : Typically in the form of a hand
+; - ns-resize : Up and down arrows, can be used to indicate scrolling
+cursor-click =
+cursor-scroll =
+
+################################################################################
+################################################################################
+############                       MODULE BSPWM                     ############
+################################################################################
+################################################################################
+
+[module/bspwm]
+type = internal/bspwm
+
+pin-workspaces = true
+; strip-wsnumbers = true
+index-sort = false
+enable-click = true
+enable-scroll = true
+wrapping-scroll = false
+reverse-scroll = false
+
+ws-icon-0 = dev;
+ws-icon-1 = www;
+ws-icon-2 = chat;
+ws-icon-3 = sys;
+ws-icon-4 = vbox;
+ws-icon-5 = mus;
+ws-icon-6 = vid;
+ws-icon-7 = doc;
+ws-icon-8 = pass;
+ws-icon-default = " "
+
+format = <label-state> <label-mode>
+
+label-focused = %icon% %name%
+label-focused-background = ${colors.background}
+label-focused-underline= #6790eb
+label-focused-padding = 4
+label-focused-foreground = #6790EB
+
+label-occupied = %icon% %name%
+label-occupied-padding = 2
+label-occupied-background = ${colors.background}
+label-occupied-foreground = #6790EB
+
+label-urgent = %icon% %name%
+label-urgent-padding = 2
+
+label-empty = %icon% %name%
+label-empty-foreground = ${colors.foreground}
+label-empty-padding = 2
+label-empty-background = ${colors.background}
+label-monocle = "  "
+label-monocle-foreground = ${colors.foreground}
+label-tiled = "  "
+label-tiled-foreground = ${colors.foreground}
+label-fullscreen = "  "
+label-fullscreen-foreground = ${colors.foreground}
+label-floating = "  "
+label-floating-foreground = ${colors.foreground}
+label-pseudotiled = "  "
+label-pseudotiled-foreground = ${colors.foreground}
+label-locked = "  "
+label-locked-foreground = ${colors.foreground}
+label-sticky = "  "
+label-sticky-foreground = ${colors.foreground}
+label-private =  "     "
+label-private-foreground = ${colors.foreground}
+
+; Separator in between workspaces
+;label-separator = |
+;label-separator-padding = 10
+;label-separator-foreground = #ffb52a
+
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+################################################################################
+################################################################################
+############                     MODULES ARROWS                     ############
 ################################################################################
 ################################################################################
 
@@ -819,6 +987,19 @@ bar-progress-fill-background = ${colors.background}
 bar-progress-indicator-foreground = ${colors.foreground}
 format-online-foreground = ${colors.foreground}
 format-online-background = ${colors.background}
+
+################################################################################
+
+[module/moc]
+type = custom/script
+tail = true
+label =  %output%
+exec = mocp -i | grep Title: | awk 'NR==1' | awk -F ":" '{print $2}'
+click-right = alacritty -e mocp
+click-left = mocp --toggle-pause
+format-foreground = ${colors.foreground}
+format-background = ${colors.powerline1}
+
 ################################################################################
 
 [module/networkspeedup]
