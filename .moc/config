@@ -79,7 +79,7 @@ ReadTags = yes
 #
 # Example:    MusicDir = "/home/joe/music"
 #
-MusicDir = "/home/q/Music/alive-outside/"
+MusicDir = "/home/q/Music"
 
 # Start in the music directory by default?  If set to 'no', start
 # in the current directory by default.  A single directory on
@@ -537,7 +537,7 @@ Layout1 = directory(0,0,100%,100%):playlist(0%,0,FILL,100%)
 #
 # Adding music to playlist
 ExecCommand1 = "addsong alive-outside %f"
-#ExecCommand2 =
+ExecCommand2 = "rm -f %f"
 #ExecCommand3 =
 #ExecCommand4 =
 #ExecCommand5 =

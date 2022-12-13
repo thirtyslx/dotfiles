@@ -98,7 +98,7 @@ previous              = b
 toggle_shuffle        = S
 toggle_repeat         = R
 toggle_auto_next      = N
-toggle_mixer          = x
+toggle_mixer          = M-x
 go_url                = o
 
 # Volume control keys:
@@ -171,7 +171,7 @@ equalizer_next        = M-k
 mark_start            = '
 mark_end              = "
 exec_command1         = a
-exec_command2         = F2
+exec_command2         = x
 exec_command3         = F3
 exec_command4         = F4
 exec_command5         = F5
