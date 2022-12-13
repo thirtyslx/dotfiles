@@ -1,0 +1,3 @@
+#!/bin/sh
+
+echo -e "/home/q/.config/sxhkd/sxhkdrc\n/home/q/.config/$1/sxhkd/$1" | entr -p copysxhkdconfig $1

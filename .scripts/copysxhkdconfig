@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cat /home/q/.config/sxhkd/sxhkdrc > /home/q/.config/$1/sxhkd/sxhkdrc
+cat /home/q/.config/$1/sxhkd/$1 >> /home/q/.config/$1/sxhkd/sxhkdrc
