@@ -2,4 +2,4 @@
 
 # Script for adding song to the playlist
 
-ln "$2" "/home/q/Music/playlists/$1/"
+ln "$2" "/home/q/Music/playlists/$1/" || echo "36"
