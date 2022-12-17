@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
+import os
+import re
+import socket
+import subprocess
+from libqtile import hook
 from libqtile import qtile
-from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen
-from libqtile.command import lazy
-from libqtile import layout, bar, widget, hook
+from typing import List
+from libqtile import bar, layout, widget
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
-from typing import List  # noqa: F401
+from libqtile.utils import guess_terminal
+from libqtile.widget import Spacer, Backlight
+from libqtile.widget.image import Image
+from libqtile.dgroups import simple_key_binder
 
 import colors
 
@@ -62,8 +70,20 @@ keys = [
     Key([mod, "shift"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod, "shift"], "p", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod, "shift"], i.name, lazy.window.togroup(i.name), desc="Move focused window to new group."),
 ]
 
+# groups = [Group("", layout='monadtall'),
+#           Group("", layout='monadtall'),
+#           Group("", layout='monadtall'),
+#           Group("", layout='monadtall'),
+#           Group("", layout='monadtall'),
+#           Group("", layout='monadtall'),
+#           Group("", layout='monadtall'),
+#           Group("", layout='monadtall'),
+#           Group("", layout='monadtall'),
+#           Group("", layout='monadtall')]
+# dgroups_key_binder = simple_key_binder("mod4")
 
 # Create labels for groups and assign them a default layout.
 groups = []
@@ -92,8 +112,6 @@ for i in groups:
             desc="Move to next group."),
         Key(["mod1", "shift"], "Tab", lazy.screen.prev_group(),
             desc="Move to previous group."),
-        Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-            desc="Move focused window to new group."),
     ])
 
 
@@ -149,20 +167,32 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 separator =  widget.TextBox(
-                       text = '|',
-                        font="JetBrains Mono Nerd Font",
-                       background = colors[0],
-                       foreground = foregroundColor,
-                       padding = 5,
-                       fontsize = 16
-                       )
+    text = '|',
+    font="JetBrains Mono Nerd Font",
+    background = colors[0],
+    foreground = foregroundColor,
+    padding = 5,
+    fontsize = 16
+    )
 
 indent = widget.Sep(
-                       linewidth = 0,
-                       padding = 6,
-                       foreground = colors[2],
-                       background = colors[0]
-                       )
+    linewidth = 0,
+    padding = 6,
+    foreground = colors[2],
+    background = colors[0]
+    )
+
+def icon(icon, fontsize, bgcolor, color):
+    return widget.TextBox(
+               fmt = icon,
+               fontsize = fontsize,
+               foreground = color,
+               background = bgcolor,
+               padding = 0
+               )
+
+
+
 
 screens = [
     Screen(
@@ -170,106 +200,129 @@ screens = [
             [
                 indent,
                 widget.Image(
-                        filename = "~/.config/qtile/icons/python.png",
-                        scale = "False",
-                        mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerminal)}
-                       ),
+                    filename = "~/.config/qtile/icons/python.png",
+                    scale = "False",
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerminal)}
+                   ),
                 indent,
                 widget.GroupBox(
-                        margin_y = 5,
-                        margin_x = 0,
-                        padding_y = 5,
-                        padding_x = 3,
-                        borderwidth = 3,
-                        active = workspaceColor,
-                        inactive = colors[2],
-                        rounded = False,
-                        highlight_color = foregroundColorTwo,
-                        highlight_method = "line",
-                        this_current_screen_border = colors[6],
-                        this_screen_border = workspaceColor,
-                        other_current_screen_border = workspaceColor,
-                        other_screen_border = workspaceColor,
-                        foreground = foregroundColor,
-                        background = backgroundColor
-                        ),
+                    margin_y = 5,
+                    margin_x = 0,
+                    padding_y = 5,
+                    padding_x = 3,
+                    borderwidth = 3,
+                    active = workspaceColor,
+                    inactive = colors[2],
+                    rounded = False,
+                    highlight_color = foregroundColorTwo,
+                    highlight_method = "line",
+                    this_current_screen_border = colors[6],
+                    this_screen_border = workspaceColor,
+                    other_current_screen_border = workspaceColor,
+                    other_screen_border = workspaceColor,
+                    foreground = foregroundColor,
+                    background = backgroundColor
+                    ),
                 separator,
                 # widget.CurrentLayoutIcon(
-                #         custom_icon_paths = [os.path.expanduser("~/.config/qtile/icons")],
-                #         scale = 0.7
-                #         foreground = foregroundColor,
-                #         background = backgroundColor,
-                #         padding = 0
-                #         ),
+                #     custom_icon_paths = [os.path.expanduser("~/.config/qtile/icons")],
+                #     scale = 0.7,
+                #     foreground = foregroundColor,
+                #     background = backgroundColor,
+                #     padding = 0
+                #     ),
                 widget.CurrentLayout(
-                        foreground = colors[4],
-                        background = backgroundColor,
-                        padding = 5
-                        ),
+                    foreground = colors[4],
+                    background = backgroundColor,
+                    padding = 5
+                    ),
                 separator,
-                widget.Prompt(),
                 widget.WindowName(
-                        foreground = colors[6],
-                        background = backgroundColor,
-                        padding = 0
-                        ),
+                    foreground = colors[6],
+                    background = backgroundColor,
+                    padding = 0
+                    ),
                 indent,
+                icon("", 36, backgroundColor, colors[5]),
+                icon("", 38, colors[5], colors[0]),
                 widget.CheckUpdates(
-                        update_interval = 1800,
-                        distro = "Arch_checkupdates",
-                        display_format = "Updates: {updates} ",
-                        colour_have_updates = colors[5],
-                        colour_no_updates = colors[5],
-                        mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(f"{myTerminal} -e sudo pacman -Syyu")},
-                        foreground = colors[5],
-                        background = backgroundColor,
-                        padding = 5
-                        ),
-                indent,
+                    update_interval = 1800,
+                    distro = "Arch_yay",
+                    display_format = "Updates: {updates} ",
+                    no_update_string='No updates',
+                    mouse_callbacks = {
+                        'Button1': lambda: qtile.cmd_spawn(f"{myTerminal} -e sudo pacman -Syyu"),
+                        'Button3': lambda: qtile.cmd_spawn(f"{myTerminal} -e yay -Syyu")
+                        },
+                    colour_have_updates = colors[0],
+                    colour_no_updates = colors[0],
+                    foreground = colors[0],
+                    background = colors[5],
+                    padding = 5
+                    ),
+                icon("", 36, colors[5], colors[10]),
                 widget.Net(
-                        interface = "eno1",
-                        format = 'Net: {down} ↓↑ {up}',
-                        foreground = colors[10],
-                        background = backgroundColor,
-                        padding = 5
-                        ),
-                indent,
+                    interface = "eno1",
+                    format = 'Net: {down} ↓↑ {up}',
+                    foreground = colors[0],
+                    background = colors[10],
+                    padding = 5
+                    ),
+                icon("", 36, colors[10], colors[4]),
+                icon("", 19, colors[4], backgroundColor),
+                widget.DF(
+                    format = 'Free: {uf}{m}',
+                    partition = '/',
+                    visible_on_warn = False,
+                    foreground = colors[0],
+                    background = colors[4],
+                    padding = 5
+                    ),
+                icon("", 36, colors[4], colors[9]),
+                icon("", 40, colors[9], colors[0]),
                 widget.Memory(
-                        mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(f"{myTerminal}  -e htop")},
-                        fmt = 'Mem: {}',
-                        measure_mem='G',
-                        foreground = colors[9],
-                        background = backgroundColor,
-                        padding = 5
-                        ),
-                indent,
-                widget.Volume(
-                        fmt = 'Vol: {}',
-                        foreground = colors[7],
-                        background = backgroundColor,
-                        padding = 5
-                        ),
-                widget.KeyboardLayout(
-                        fmt = 'Keyboard: {}',
-                        configured_keyboards = ["en", "ru"],
-                        foreground = colors[8],
-                        background = backgroundColor,
-                        padding = 5
-                        ),
-                indent,
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(f"{myTerminal}  -e htop")},
+                    format = 'Mem: {MemUsed: .0f}{mm}',
+                    measure_mem='M',
+                    foreground = colors[0],
+                    background = colors[9],
+                    padding = 5
+                    ),
+                icon("", 36, colors[9], colors[7]),
+                icon("", 35, colors[7], colors[0]),
+                widget.CPU(
+                    format = 'Cpu: {load_percent}%',
+                    foreground = colors[0],
+                    background = colors[7],
+                    padding = 5
+                    ),
+                icon("", 36, colors[7], colors[8]),
+                icon("墳", 38, colors[8], colors[0]),
+                widget.PulseVolume(
+                    fmt = 'Vol: {}',
+                    step = 5,
+                    volume_app = "pavolume",
+                    scroll_delay = 0,
+                    update_interval = 0.01,
+                    mouse_callbacks = {'Button3': lambda: qtile.cmd_spawn('pavucontrol')},
+                    foreground = colors[0],
+                    background = colors[8],
+                    padding = 5
+                    ),
+                icon("", 36, colors[8], colors[6]),
+                icon("", 19, colors[6], colors[0]),
                 widget.Clock(
-                        format = "%A, %B %d - %H:%M ",
-                        foreground = colors[6],
-                        background = backgroundColor,
-                        padding = 5
-                        ),
-                indent,
-                widget.Systray(
-                        foreground = colors[7],
-                        background = backgroundColor,
-                        padding = 5
-                        ),
-                indent,
+                    format = "%A, %B %d - %H:%M ",
+                    foreground = colors[0],
+                    background = colors[6],
+                    padding = 5
+                    ),
+                # icon("", 36, colors[6], colors[10]),
+                # widget.Systray(
+                #     foreground = colors[0],
+                #     background = colors[10],
+                #     padding = 5
+                #     ),
             ],
             28
         ),
