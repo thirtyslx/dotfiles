@@ -7,7 +7,8 @@ pgrep -x xcompmgr > /dev/null || xcompmgr &
 sxhkd -c $HOME/.config/bspwm/sxhkd/sxhkdrc || pkill -USR1 -x sxhkd &
 dunst --config $HOME/.config/dunst/dunstrc &
 $HOME/.config/polybar/bsplaunch.sh &
-setxkbmap -model pc104 -layout us,ru -variant ,, -option grp:alt_shift_toggle
+setxkbmap -model pc104 -layout us,ru -variant ,, -option grp:alt_shift_toggle &
+xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 # Workspaces
 bspc monitor HDMI-1 -d dev www chat sys vbox mus vid doc pass
