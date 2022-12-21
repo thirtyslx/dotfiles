@@ -55,6 +55,8 @@ powerline1 = #8d62a9
 powerline2 = #668bd7
 window = #e1acff
 focused = #ad69af
+purple = #bd93f9
+pink = #ff79c6
 
 ################################################################################
 ################################################################################
@@ -334,8 +336,8 @@ font-2 = "FontAwesome:size=15;3"
 
 modules-left = bspwm xwindow
 modules-center =
-modules-right = arrow3 moc arrow1 uptime arrow2 arch-aur-updates arrow1 networkspeedup networkspeeddown arrow2 filesystem2 arrow1 memory2 arrow2 cpu2 arrow1 pulseaudio arrow2 xkeyboard arrow1 date arrow2
-; modules-right = arrow4 uptime arrow2 arch-aur-updates arrow1 networkspeedup networkspeeddown arrow2 filesystem2 arrow1 memory2 arrow2 cpu2 arrow1 pulseaudio arrow2 xkeyboard arrow1 date arrow2
+; modules-right = arrow3 moc arrow1 uptime arrow2 arch-aur-updates arrow1 networkspeedup networkspeeddown arrow2 filesystem2 arrow1 memory2 arrow2 cpu2 arrow1 pulseaudio arrow2 xkeyboard arrow1 date arrow2
+modules-right = arrow4 uptime arrow2 arch-aur-updates arrow1 networkspeedup networkspeeddown arrow2 filesystem2 arrow1 memory2 arrow2 cpu2 arrow1 pulseaudio arrow2 xkeyboard arrow1 date arrow2
 
 separator =
 
@@ -409,15 +411,15 @@ ws-icon-default = " "
 format = <label-state> <label-mode>
 
 label-focused = %icon% %name%
-label-focused-background = ${colors.background}
-label-focused-underline= #6790eb
+label-focused-background = ${colors.purple}
+label-focused-underline= ${colors.purple}
 label-focused-padding = 4
-label-focused-foreground = #6790EB
+label-focused-foreground = ${colors.foreground}
 
 label-occupied = %icon% %name%
 label-occupied-padding = 2
 label-occupied-background = ${colors.background}
-label-occupied-foreground = #6790EB
+label-occupied-foreground = ${colors.purple}
 
 label-urgent = %icon% %name%
 label-urgent-padding = 2
@@ -712,8 +714,8 @@ type = internal/date
 interval = 1
 ; See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
 ; NOTE: if you want to use syntax tags here you need to use %%{...}
-date = " %a %b %d, %Y"
-date-alt = " %a %b %d, %Y"
+date = " %a %b %d"
+date-alt = " %a %b %d"
 ;time = %l:%M%p
 ;time-alt = %l:%M%p
 time = %H:%M
@@ -722,7 +724,7 @@ format-prefix = " "
 format-prefix-foreground = ${colors.foreground}
 format-foreground = ${colors.foreground}
 format-background = ${colors.powerline2}
-label = "%date% %time%"
+label = "%date% - %time%"
 
 #################################################################
 
