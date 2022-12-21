@@ -115,6 +115,7 @@ Shuffle = yes
 #FormatString = "%(n:%n :)%(a:%a - :)%(t:%t:)%(A: \(%A\):)"
 #FormatString = "%(n:%n. :)%(a:%a - :)%(t:%t:)"
 FormatString = "%(a:%a - :)%(t:%t:)"
+# FormatString = "%(t:%t:)"
 
 # Input and output buffer sizes (in kilobytes).
 #InputBuffer = 512                  # Minimum value is 32KB
@@ -536,7 +537,7 @@ Layout1 = directory(0,0,100%,100%):playlist(0%,0,FILL,100%)
 #             ExecCommand2 = "/home/joe/now_playing %I"
 #
 # Adding music to playlist
-ExecCommand1 = "addsong alive-outside %f"
+ExecCommand1 = "addtoplaylist alive-outside %f"
 ExecCommand2 = "rm -f %f"
 #ExecCommand3 =
 #ExecCommand4 =
