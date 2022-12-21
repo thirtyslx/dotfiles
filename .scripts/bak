@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# Script for backuping file
-
-cp $1 $1.bak
