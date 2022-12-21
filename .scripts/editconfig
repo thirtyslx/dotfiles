@@ -19,17 +19,23 @@ rofi            ~/.config/rofi/config.rasi
 xmobar          ~/.config/xmobar/xmobarrc
 xmonad          ~/.config/xmonad/xmonad.hs
 starship        ~/.config/starship.toml
+sxhkd           ~/.config/sxhkd/sxhkdrc
 sxhkd-i3        ~/.config/i3/sxhkd/sxhkdrc
+sxhkd-bspwm     ~/.config/bspwm/sxhkd/sxhkdrc
 moc             ~/.moc/config
 bash            ~/.bashrc
 vim             ~/.vimrc
 xinitrc         ~/.xinitrc
-zsh             ~/.zshrc
+zsh             ~/.config/zsh/.zshrc
 editconfig      ~/.scripts/editconfig
 autostart-i3    ~/.config/i3/autostart.sh
+autostart-qtile ~/.config/qtile/autostart.sh
 ranger          ~/.config/ranger/rc.conf
-"
-choice="$(echo "$configs" | awk 'NR>1' | sort | dmenu -i -l 50 -p 'Edit config:' -fn 'JetBrainsMonoNerdFont-14' | awk '{print $NF}')"
+mpd             ~/.config/mpd/mpd.conf
+aliasrc         ~/.config/shell/aliasrc
+qtile           ~/.config/qtile/config.py"
+choice="$(echo "$configs" | awk 'NR>1' | sort | dmenu -l 50 -p 'Edit config:' -fn 'JetBrainsMonoNerdFont-14' | awk '{print $NF}')"
+# echo "$(echo "$configs" | awk "NR<$(($(wc -l < $configs) - 1))")"
 
 if [ "$choice" != "" ]; then
     eval "$editor $choice"
