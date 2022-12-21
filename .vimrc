@@ -1,113 +1,191 @@
-" plugins
-let need_to_install_plugins = 0
-if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    let need_to_install_plugins = 1
-endif
+"     _            ____                 _
+"    / \   ___ ___| __ ) _ __ ___  __ _| | _____ _ __
+"   / _ \ / __/ __|  _ \| '__/ _ \/ _` | |/ / _ \ '__|
+"  / ___ \\__ \__ \ |_) | | |  __/ (_| |   <  __/ |
+" /_/   \_\___/___/____/|_|  \___|\__,_|_|\_\___|_|
+"
+" http://www.gitlab.com/assbreaker/
+"
+" My neovim config. Not much to see here; just some pretty standard stuff.
 
-call plug#begin()
-Plug 'tpope/vim-sensible'
-"Plug 'itchyny/lightline.vim'
-Plug 'ap/vim-buftabline'
-Plug 'airblade/vim-gitgutter'
-Plug 'preservim/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'jiangmiao/auto-pairs'
-Plug 'dense-analysis/ale'
-Plug 'majutsushi/tagbar'
-Plug 'vim-scripts/indentpython.vim'
-Plug 'lepture/vim-jinja'
-Plug 'pangloss/vim-javascript'
-Plug 'alvan/vim-closetag'
-Plug 'maxmellon/vim-jsx-pretty'
+"#####################################################
+"################         SETs        ################
+"#####################################################
+
+syntax on                " Enable syntax highlight
+set nu                   " Enable line numbers
+set relativenumber       " Enable relative numbers
+set tabstop=4            " Show existing tab with 4 spaces width
+set softtabstop=4        " Show existing tab with 4 spaces width
+set shiftwidth=4         " When indenting with '>', use 4 spaces width
+set expandtab            " On pressing tab, insert 4 spaces
+set smarttab             " insert tabs on the start of a line according to shiftwidth
+set smartindent          " Automatically inserts one extra level of indentation in some cases
+set hidden               " Hides the current buffer when a new file is openned
+set incsearch            " Incremental search
+set ignorecase           " Ingore case in search
+set smartcase            " Consider case if there is a upper case character
+set scrolloff=12         " Minimum number of lines to keep above and below the cursor
+set colorcolumn=100      " Draws a line at the given line to keep aware of the line size
+set signcolumn=yes       " Add a column on the left. Useful for linting
+set cmdheight=1          " Give more space for displaying messages
+set updatetime=100       " Time in miliseconds to consider the changes
+set encoding=utf-8       " The encoding should be utf-8 to activate the font icons
+set fileencoding=utf-8   " The encoding should be utf-8 to activate the font icons
+set nobackup             " No backup files
+set nowritebackup        " No backup files
+set noshowmode           " No show mode below airline
+set splitright           " Create the vertical splits to the right
+set splitbelow           " Create the horizontal splits below
+set autoread             " Update vim after file update from outside
+set mouse=a              " Enable mouse support
+set nohlsearch           " No highlight words after search
+set laststatus=2         " Always show the status bar
+set guicursor=            " Use block cursor in insert mode
+set clipboard+=unnamedplus " Use system clipboard
+filetype on              " Detect and set the filetype option and trigger the FileType Event
+filetype plugin on       " Load the plugin file for the file type, if any
+filetype indent on       " Load the indent file for the file type, if any
+
+"#####################################################
+"################       PLUGINS       ################
+"#####################################################
+
+call plug#begin('~/.config/nvim/plugged/')
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'ap/vim-css-color'
+Plug 'joshdick/onedark.vim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'mg979/vim-visual-multi'
+Plug 'tc50cal/vim-terminal'
+Plug 'preservim/tagbar'
+Plug 'raimondi/delimitmate'
+Plug 'junegunn/goyo.vim'
+Plug 'crusoexia/vim-dracula'
+
 call plug#end()
 
-filetype plugin indent on
-syntax on
+" Set custom colorscheme
+"colorscheme onedark
+colorscheme dracula
 
-if need_to_install_plugins == 1
-    echo "Installing plugins..."
-    silent! PlugInstall
-    echo "Done!"
-    q
-endif
+"#####################################################
+"################         MAPs        ################
+"#####################################################
 
-" always show the status bar
-set laststatus=2
+" Map leader to Space
+let mapleader = " "
 
-" enable 256 colors
-set t_Co=256
-set t_ut=
+" Map Caps Lock to Escape
+au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+au VimLeave * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
 
-" turn on line numbering
-set number
+" Toggle NerdTree
+nnoremap <Leader>n :NERDTreeToggle<CR>
 
-" sane text files
-set fileformat=unix
-set encoding=utf-8
-set fileencoding=utf-8
+" Remap splits navigation to just Ctrl + hjkl
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
-" sane editing
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set colorcolumn=80
-set expandtab
-set viminfo='25,\"50,n~/.viminfo
-autocmd FileType html setlocal tabstop=2 shiftwidth=2 softtabstop=2
-autocmd FileType css setlocal tabstop=2 shiftwidth=2 softtabstop=2
-autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2
+" Adjusing split sizes with Shift + hjkl
+noremap <silent> <A-h> :vertical resize -5<CR>
+noremap <silent> <A-j> :resize +5<CR>
+noremap <silent> <A-k> :resize -5<CR>
+noremap <silent> <A-l> :vertical resize +5<CR>
 
-" auto-pairs
-au FileType python let b:AutoPairs = AutoPairsDefine({"f'" : "'", "r'" : "'", "b'" : "'"})
+" Change 2 split windows from vert to horiz or horiz to vert
+nnoremap <Leader>th <C-w>t<C-w>H
+nnoremap <Leader>tv <C-w>t<C-w>K
+nnoremap <C-w>a <C-w>v<C-w>t<C-w>K
 
-" word movement
-imap <S-Left> <Esc>bi
-nmap <S-Left> b
-imap <S-Right> <Esc><Right>wi
-nmap <S-Right> w
+" Coc autocomplete
+inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
 
-" indent/unindent with tab/shift-tab
+" Indent/unindent with Tab/Shift-Tab
 nmap <Tab> >>
 nmap <S-tab> <<
 imap <S-Tab> <Esc><<i
 vmap <Tab> >gv
 vmap <S-Tab> <gv
 
-" mouse
-set mouse=a
-let g:is_mouse_enabled = 1
-noremap <silent> <Leader>m :call ToggleMouse()<CR>
-function ToggleMouse()
-    if g:is_mouse_enabled == 1
-        echo "Mouse OFF"
-        set mouse=
-        let g:is_mouse_enabled = 0
-    else
-        echo "Mouse ON"
-        set mouse=a
-        let g:is_mouse_enabled = 1
-    endif
-endfunction
+" Navigate between buffers (Emacs like)
+nmap <leader>bp :bp<CR>
+nmap <leader>bn :bn<CR>
+nmap <leader>bk <C-w>cab> <gv
 
-" color schem
-packadd! dracula
-syntax on
-colorscheme dracula
-filetype on
-filetype plugin indent on
+" Tagbar
+map <leader>t :TagbarToggle<CR>
 
-" lightline
-set noshowmode
-let g:lightline = { 'colorscheme': 'onedark' }
+" Tabs
+nnoremap <C-t> :tabnew<CR>
+nnoremap <C-c> :tabclose<CR>
+nnoremap <S-k> :tabnext<CR>
+nnoremap <S-j> :tabprev<CR>
+nnoremap <S-h> :tabfirst<CR>
+nnoremap <S-l> :tablast<CR>
 
-" code folding
-set foldmethod=indent
-set foldlevel=99
+" Select all
+nnoremap <C-a> gg<S-v><S-g>
 
-" wrap toggle
+" Comment
+nnoremap <C-_> <Plug>CommentaryLinej
+
+" Goyo
+nnoremap <leader>g :Goyo<CR>
+
+"#####################################################
+"################         LETs        ################
+"#####################################################
+
+" Air-line
+let g:airline_powerline_fonts = 1
+" let g:airline_theme = 'onedark'
+let g:airline_theme = 'base16_dracula'
+
+" if !exists('g:airline_symbols')
+"     let g:airline_symbols = {}
+" endif
+
+" let g:airline_left_sep = ''
+" let g:airline_left_alt_sep = ''
+" let g:airline_right_sep = ''
+" let g:airline_right_alt_sep = ''
+" let g:airline_symbols.branch = ''
+" let g:airline_symbols.readonly = ''
+" let g:airline_symbols.linenr = ''
+
+"#####################################################
+"################      AUTOCMDs       ################
+"#####################################################
+
+" Automatically deletes all trailing whitespace and newlines at end of file on save. & reset cursor position
+autocmd BufWritePre * let currPos = getpos(".")
+autocmd BufWritePre * %s/\s\+$//e
+autocmd BufWritePre * %s/\n\+\%$//e
+autocmd BufWritePre *.[ch] %s/\%$/\r/e
+autocmd BufWritePre * cal cursor(currPos[1], currPos[2])
+
+" Custom tabstop for html, css, javascript
+autocmd FileType html setlocal tabstop=2 shiftwidth=2 softtabstop=2
+autocmd FileType css setlocal tabstop=2 shiftwidth=2 softtabstop=2
+autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2
+
+" Restore place in file from previous session
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+"#####################################################
+"################      FUNCTIONS      ################
+"#####################################################
+
+" Wrap toggle
 setlocal nowrap
 noremap <silent> <Leader>w :call ToggleWrap()<CR>
 function ToggleWrap()
@@ -139,58 +217,7 @@ function ToggleWrap()
     endif
 endfunction
 
-" move through split windows
-nmap <leader><Up> :wincmd k<CR>
-nmap <leader><Down> :wincmd j<CR>
-nmap <leader><Left> :wincmd h<CR>
-nmap <leader><Right> :wincmd l<CR>
-
-" move through buffers
-nmap <leader>[ :bp!<CR>
-nmap <leader>] :bn!<CR>
-nmap <leader>x :bp<bar>bd#<CR>
-
-" restore place in file from previous session
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-" file browser
-let NERDTreeIgnore = ['\.pyc$', '__pycache__']
-let NERDTreeMinimalUI = 1
-let g:nerdtree_open = 0
-map <leader>n :call NERDTreeToggle()<CR>
-function NERDTreeToggle()
-    NERDTreeTabsToggle
-    if g:nerdtree_open == 1
-        let g:nerdtree_open = 0
-    else
-        let g:nerdtree_open = 1
-        wincmd p
-    endif
-endfunction
-
-function! StartUp()
-    if 0 == argc()
-        NERDTree
-    end
-endfunction
-autocmd VimEnter * call StartUp()
-
-" ale
-map <C-e> <Plug>(ale_next_wrap)
-map <C-r> <Plug>(ale_previous_wrap)
-
-" tags
-map <leader>t :TagbarToggle<CR>
-
-" copy, cut and paste
-vmap <C-c> "+y
-vmap <C-x> "+c
-vmap <C-v> c<ESC>"+p
-imap <C-v> <ESC>"+pa
-
-" disable autoindent when pasting text
-" source: https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode
-let &t_SI .= "\<Esc>[?2004h"
+" Disable autoindent when pasting text
 let &t_EI .= "\<Esc>[?2004l"
 
 function! XTermPasteBegin()
@@ -201,3 +228,10 @@ endfunction
 
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 
+" Autoinstall Vim-Plug
+if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
+	echo "Downloading junegunn/vim-plug to manage plugins..."
+	silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
+	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+	autocmd VimEnter * PlugInstall
+endif
