@@ -65,7 +65,9 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'mg979/vim-visual-multi'
 Plug 'tc50cal/vim-terminal'
 Plug 'preservim/tagbar'
-Plug 'neoclide/coc.nvim'
+Plug 'raimondi/delimitmate'
+Plug 'junegunn/goyo.vim'
+" Plug 'neoclide/coc.nvim'
 " Plug 'dracula/vim', { 'as': 'dracula' }
 " Plug 'rafi/awesome-vim-colorschemes'
 
@@ -132,7 +134,13 @@ nnoremap <S-h> :tabfirst<CR>
 nnoremap <S-l> :tablast<CR>
 
 " Select all
-nnoremap <leader>a gg<S-v><S-g>
+nnoremap <C-a> gg<S-v><S-g>
+
+" Comment
+nnoremap <C-_> <Plug>CommentaryLinej
+
+" Goyo
+nnoremap <leader>g :Goyo<CR>
 
 "#####################################################
 "################         LETs        ################
