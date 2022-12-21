@@ -48,9 +48,6 @@ ctrl + Print
 super + g
     thunar
 
-super + p
-    ~/.scripts/togglepolybar
-
 # Close all notifications
 
 ctrl + space
@@ -59,20 +56,20 @@ ctrl + space
 # SYSTEM
 
 super + 0; {shift+s,s,r,l,h}
-    {shutdown now,systemctl suspend,systemctl reboot,xlock,systemctl hibernate}
+    {shutdown now,systemctl suspend,reboot,xlck,systemctl hibernate}
 
 super + s
     systemctl suspend
 
 # AUDIO
 
-ctrl + F2
+F2
     amixer -D pulse sset Master 5%-; dunstctl close-all; showvolume
 
-ctrl + F3
+F3
     amixer -D pulse sset Master 5%+; dunstctl close-all; showvolume
 
-ctrl + F4
+F4
     amixer -D pulse sset Master toggle; dunstctl close-all; showvolume
 
 # PLAYER
@@ -123,10 +120,10 @@ super + shift + c
 # SCRIPTS
 
 super + Insert
-    xdotool type $(grep -v '^#' ~/.local/share/bookmarks | dmenu -i -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
+    xdotool type $(grep -v '^#' ~/.local/share/bookmarks | dmenu -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
 
 super + shift + Insert
-    xdotool type $(grep -v '^#' ~/.local/share/see-later-bookmarks | dmenu -i -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
+    xdotool type $(grep -v '^#' ~/.local/share/see-later-bookmarks | dmenu  -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
 
 super + b
     bookmarkthis
@@ -137,6 +134,10 @@ super + e
 ########################################
 ###          BSPWM SPECIFIC          ###
 ########################################
+
+# Toggle polybar
+super + p
+    togglepolybar bspwm
 
 # close and kill
 super + {_, shift + }q
