@@ -1,0 +1,4 @@
+#!/bin/sh
+
+file="$(find $HOME -type f | dmenu -l 50)"
+[ -n "$file" ] && curl -F "file=@$file" 0x0.st | xclip -sel c && notify-send "File link copied." "'$file'"

@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# Script for removing numbers from the music files names
-
-for i in $(seq 30); do
-    perl-rename "s/$(printf "%02d" $i). //g" "$1/*.opus"
-done

@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# Script for showing current volume
-
-notify-send "VOLUME" "$(amixer -D pulse sget Master | awk -F"[][]" '/Left:/ { print $2 }')"

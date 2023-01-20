@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# Script for tagging each album separately
-
-id3 -2 -m "%n. %a - %t.opus" || id3 -2 -m "%a - %t.opus"
-id3 -2 -l "$(printf '%s\n' "${PWD##*/}")" "*.opus"
