@@ -48,15 +48,25 @@ format-margin =
 format-offset =
 
 [colors]
-background = #282c34
-foreground = #fefefe
-alert = #db104e
-powerline1 = #8d62a9
-powerline2 = #668bd7
-window = #e1acff
-focused = #ad69af
-purple = #bd93f9
-pink = #ff79c6
+; background = #282c34
+; foreground = #fefefe
+; alert = #db104e
+; powerline1 = #8d62a9
+; powerline2 = #668bd7
+; window = #e1acff
+; focused = #8be9fd
+; purple = #bd93f9
+; pink = #ff79c6
+; cyan = #8be9fd
+
+background = ${xrdb:color0:#222}
+foreground = ${xrdb:color7:#222}
+powerline1 = ${xrdb:color1:#222}
+powerline2 = ${xrdb:color2:#222}
+alert = ${xrdb:color3:#222}
+window = ${xrdb:color5:#222}
+focused = ${xrdb:color3:#222}
+unfocused = ${xrdb:color6:#222}
 
 ################################################################################
 ################################################################################
@@ -411,15 +421,15 @@ ws-icon-default = " "
 format = <label-state> <label-mode>
 
 label-focused = %icon% %name%
-label-focused-background = ${colors.purple}
-label-focused-underline= ${colors.purple}
+label-focused-background = ${colors.focused}
+label-focused-underline= ${colors.focused}
 label-focused-padding = 4
 label-focused-foreground = ${colors.foreground}
 
 label-occupied = %icon% %name%
 label-occupied-padding = 2
 label-occupied-background = ${colors.background}
-label-occupied-foreground = ${colors.purple}
+label-occupied-foreground = ${colors.unfocused}
 
 label-urgent = %icon% %name%
 label-urgent-padding = 2

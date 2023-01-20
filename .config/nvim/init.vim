@@ -13,6 +13,9 @@
 "#####################################################
 
 syntax on                " Enable syntax highlight
+filetype on              " Detect and set the filetype option and trigger the FileType Event
+filetype plugin on       " Load the plugin file for the file type, if any
+filetype indent on       " Load the indent file for the file type, if any
 set nu                   " Enable line numbers
 set relativenumber       " Enable relative numbers
 set tabstop=4            " Show existing tab with 4 spaces width
@@ -26,7 +29,7 @@ set incsearch            " Incremental search
 set ignorecase           " Ingore case in search
 set smartcase            " Consider case if there is a upper case character
 set scrolloff=12         " Minimum number of lines to keep above and below the cursor
-set colorcolumn=100      " Draws a line at the given line to keep aware of the line size
+" set colorcolumn=100      " Draws a line at the given line to keep aware of the line size
 set signcolumn=yes       " Add a column on the left. Useful for linting
 set cmdheight=1          " Give more space for displaying messages
 set updatetime=100       " Time in miliseconds to consider the changes
@@ -41,11 +44,8 @@ set autoread             " Update vim after file update from outside
 set mouse=a              " Enable mouse support
 set nohlsearch           " No highlight words after search
 set laststatus=2         " Always show the status bar
-set guicursor=            " Use block cursor in insert mode
+set guicursor=           " Use block cursor in insert mode
 set clipboard+=unnamedplus " Use system clipboard
-filetype on              " Detect and set the filetype option and trigger the FileType Event
-filetype plugin on       " Load the plugin file for the file type, if any
-filetype indent on       " Load the indent file for the file type, if any
 
 "#####################################################
 "################       PLUGINS       ################
@@ -68,12 +68,14 @@ Plug 'preservim/tagbar'
 Plug 'raimondi/delimitmate'
 Plug 'junegunn/goyo.vim'
 Plug 'crusoexia/vim-dracula'
+Plug 'dylanaraps/wal.vim'
 
 call plug#end()
 
 " Set custom colorscheme
-"colorscheme onedark
-colorscheme dracula
+" colorscheme onedark
+" colorscheme dracula
+" colorscheme wal
 
 "#####################################################
 "################         MAPs        ################
@@ -83,8 +85,8 @@ colorscheme dracula
 let mapleader = " "
 
 " Map Caps Lock to Escape
-au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-au VimLeave * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
+" au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+" au VimLeave * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
 
 " Toggle NerdTree
 nnoremap <Leader>n :NERDTreeToggle<CR>
@@ -148,19 +150,19 @@ nnoremap <leader>g :Goyo<CR>
 " Air-line
 let g:airline_powerline_fonts = 1
 " let g:airline_theme = 'onedark'
-let g:airline_theme = 'base16_dracula'
+" let g:airline_theme = 'base16_dracula'
 
-" if !exists('g:airline_symbols')
-"     let g:airline_symbols = {}
-" endif
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
 
-" let g:airline_left_sep = ''
-" let g:airline_left_alt_sep = ''
-" let g:airline_right_sep = ''
-" let g:airline_right_alt_sep = ''
-" let g:airline_symbols.branch = ''
-" let g:airline_symbols.readonly = ''
-" let g:airline_symbols.linenr = ''
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
 
 "#####################################################
 "################      AUTOCMDs       ################
@@ -183,6 +185,9 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 
 " Disable Coc
 autocmd BufReadPost * silent CocDisable
+
+" Dwm autocompile
+" autocmd BufWritePost ~/.local/src/dwm/config.h !cd ~/.local/src/dwm/; echo ""; sudo make install
 
 "#####################################################
 "################      FUNCTIONS      ################
