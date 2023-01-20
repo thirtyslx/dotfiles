@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Script for tagging all songs from an artist
+# This is usefull after downloading his channel with youtube-dl
+
+id3 -2 -m "%a - %t.opus"
+id3 -2 -m "%a - %l.opus"
+
+echo "$(find . -type d)" | while IFS=$"\n" read -r dir; do
+    if [ "$dir" != "." ]; then
+        cd "$dir"
+        id3 -2 -m "%n. %a - %t.opus" || id3 -2 -m "%a - %t.opus"
+        id3 -2 -l "$(printf '%s\n' "${PWD##*/}")" "*.opus"
+        cd ..
+    fi
+done

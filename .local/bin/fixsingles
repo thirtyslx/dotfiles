@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Script for moving and renaming all singles from an artist
+# This is usefull after downloading his channel with youtube-dl
+
+dirs="$(find . -maxdepth 1 -type d -exec bash -c "echo -ne '{} '; ls '{}' | wc -l" \; | awk '$NF==1' | sed 's/.\///g' | sed 's/ 1 //g' | sed 's/ 1//g' | awk 'NR>1')"
+
+echo "$dirs" | while IFS=$"\n" read -r dir; do
+    if [ "$dir" != "" ]; then
+        mv "$dir/*.opus" .
+        rmdir "$dir"
+    else
+        echo "Nothing to do."
+    fi
+done
+
+perl-rename "s/01. //g" "*.opus"
