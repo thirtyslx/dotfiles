@@ -1,8 +1,21 @@
 #!/bin/sh
 
-# dmenu script for editing configs
+# script for editing configs easily
 
-editor="alacritty -e nvim"
+err() { echo "Usage:
+	editconfig [OPTIONS]
+Options:
+	-d, --dmenu
+            use dmenu to pick config to change
+	-f, --fzf
+            use fzf to pick config to change" && exit 1 ;}
+
+case $1 in
+    -d|--dmenu) selector="dmenu -p 'Edit config:' -fn 'JetBrainsMonoNerdFont-14'" && editor="alacritty -e nvim" ;;
+    -f|--fzf) selector="fzf" && editor="nvim" ;;
+    *) echo -e "Invalid option: $1\\n" && err ;;
+esac
+
 configs="$(< ~/.local/share/configs)"
-choice="$(echo "$configs" | awk '{print $1}' | sort | dmenu -p 'Edit config:' -fn 'JetBrainsMonoNerdFont-14')"
-[ -n "$choice" ] && eval "$editor $(echo "$configs" | grep "$choice" | awk '{print $NF}')"
+choice="$(echo "$configs" | awk '{print $1}' | sort | eval "$selector" )"
+[ -n "$choice" ] && eval "$editor $(echo "$configs" | grep "$choice" | awk '{print $NF}' | head -n1)"
