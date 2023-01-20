@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# dmenu script for editing configs
+
+editor="alacritty -e nvim"
+configs="$(< ~/.local/share/configs)"
+choice="$(echo "$configs" | awk '{print $1}' | sort | dmenu -p 'Edit config:' -fn 'JetBrainsMonoNerdFont-14')"
+[ -n "$choice" ] && eval "$editor $(echo "$configs" | grep "$choice" | awk '{print $NF}')"
