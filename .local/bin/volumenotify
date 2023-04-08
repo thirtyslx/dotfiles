@@ -1,0 +1,18 @@
+#!/bin/sh
+# changeVolume
+
+msgTag="volumechange"
+iconPath="/usr/share/icons/Adwaita/32x32/status"
+
+sink_id="$(pactl list short | grep "$(pactl get-default-sink)" | sed -n '1p' | awk '{print $1}')"
+volume="$(pactl get-sink-volume "$sink_id" | awk '{print $5}' | tr -d '%')"
+mute="$(pactl get-sink-mute "$sink_id" | awk '{print $2}')"
+
+
+if [ "$volume" -eq 0 ] || [ "$mute" = "yes" ]; then
+    # Show the sound muted notification
+    notify-send -a "changeVolume" -h string:x-dunst-stack-tag:$msgTag -i audio-volume-high "Volume muted" --expire-time=1000
+else
+    # Show the volume notification
+    notify-send -a "changeVolume" -r 36063 -i audio-volume-high -h int:value:"$volume" "Volume: ${volume}" --expire-time=1000
+fi
