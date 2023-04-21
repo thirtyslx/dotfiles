@@ -7,6 +7,7 @@
 # http://www.gitlab.com/assbreaker/
 #
 # My sxhkd config. Not much to see here; just some pretty standard stuff.
+# The Simple X Hotkey Daemon config
 
 # Restart sxhkd
 
@@ -15,8 +16,8 @@ super + Escape
 
 # APPS
 
-super + r; {n,t,f,d,c,p,g,i,o}
-    {nitrogen,telegram-desktop,pcmanfm,discord,galculator,pycharm,gpick,flatpak run com.github.rajsolai.textsnatcher,obs}
+super + r; {n,t,f,d,c,p,g,i,o,w}
+    {nitrogen,telegram-desktop,pcmanfm,discord,galculator,pycharm,gpick,flatpak run com.github.rajsolai.textsnatcher,obs,sxiv -t ~/pix/wall}
 
 super + d
     dmenu_run -fn 'JetBrainsMonoNerdFont-14'
@@ -48,6 +49,15 @@ ctrl + Print
 super + g
     thunar
 
+super + shift + o
+    killall picom || picom --experimental-backends
+
+super + o
+    killall xcompmgr || xcompmgr
+
+F1
+    echo "I hate missclicking F1!" > /dev/null 2>&1
+
 # Close all notifications
 
 ctrl + space
@@ -56,49 +66,48 @@ ctrl + space
 # SYSTEM
 
 super + 0; {shift+s,s,r,l,h}
-    {shutdown now,systemctl suspend,reboot,xlck,systemctl hibernate}
+    {shutdown now,systemctl suspend,systemctl reboot,xlck,systemctl hibernate}
 
 super + s
     systemctl suspend
 
-# AUDIO
-
-F2
-    amixer -D pulse sset Master 5%-; dunstctl close-all; showvolume
-
-F3
-    amixer -D pulse sset Master 5%+; dunstctl close-all; showvolume
-
-F4
-    amixer -D pulse sset Master toggle; dunstctl close-all; showvolume
-
-# PLAYER
-
-alt + F1
+# Moc and Player
+# Toggle audio
+super + p
+	mocp --toggle-pause
+alt + p
     playerctl play-pause
+# Pause all audio
+super + shift + p
+	mocp --pause; playerctl pause
+# Changes to next/previous tracks
+super + {comma,period}
+	mocp {--previous,--next}
+alt + {comma,period}
+    playerctl {previous,next}
+# Restart track
+super + shift + less
+	mocp --jump 0%
+# Seek foward in song
+super + {_,shift +} bracketright
+	mocp --seek +{10,60}
+# Seek backward in song
+super + {_,shift +} bracketleft
+	mocp --seek -{10,60}
+# Increase volume
+super + {equal,plus}
+	amixer -D pulse sset Master {5,15}%+; dunstctl close-all; showvolume
+# Decrease volume
+super {_,shift +} + minus
+	amixer -D pulse sset Master {5,15}%-; dunstctl close-all; showvolume
+# Mute volume
+super + shift + m
+	amixer sset Master toggle
 
-alt + F5
-    playerctl pause
-
-alt + F6
-    playerctl previous
-
-alt + F8
-    playerctl next
-
-# MOC
-
-F1
-    mocp --toggle-pause
-
-ctrl + F5
-    mocp --pause
-
-ctrl + F6
-    mocp --previous
-
-F8
-    mocp --next
+# Function keys
+# Mount a USB drive or Android device
+super + {F9,F10}
+	{dmenumount,dmenuumount}
 
 # SCRATCHPADS
 
@@ -120,10 +129,15 @@ super + shift + c
 # SCRIPTS
 
 super + Insert
-    xdotool type $(grep -v '^#' ~/.local/share/bookmarks | dmenu -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
+    grep -v '^#' ~/.local/share/bookmarks | dmenu -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1 | tr -d '\n' | xclip -sel c
+super + shift + f
+     librewolf "$(xclip -o -sel c)"
+    # librewolf $(grep -v '^#' ~/.local/share/bookmarks | dmenu -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
+    # xdotool type $(grep -v '^#' ~/.local/share/bookmarks | dmenu -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
 
 super + shift + Insert
-    xdotool type $(grep -v '^#' ~/.local/share/see-later-bookmarks | dmenu  -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
+    librewolf $(grep -v '^#' ~/.local/share/see-later-bookmarks | dmenu  -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
+    # xdotool type $(grep -v '^#' ~/.local/share/see-later-bookmarks | dmenu  -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
 
 super + b
     bookmarkthis
@@ -131,12 +145,15 @@ super + b
 super + e
     editconfig
 
+super + shift + s
+    share
+
 ########################################
 ###          BSPWM SPECIFIC          ###
 ########################################
 
 # Toggle polybar
-super + p
+super + i
     togglepolybar bspwm
 
 # close and kill

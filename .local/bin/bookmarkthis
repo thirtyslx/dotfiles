@@ -1,30 +1,22 @@
 #!/bin/sh
 
 # Script for bookmarking
-# If you will leave 'Name bookmark' field empty, bookmark
+# If you will leave 'New bookmark' field empty, bookmark
 # will be saved without the name
 
-bookmark=$(xclip -o)
+bookmark="$(echo $(xclip -o))" # trim leading and trailing spaces
+echo "bm: '$bookmark'"
 file="$HOME/.local/share/bookmarks"
-alreadybookmarked=0
 
-for line in $(awk -F " # " '{print $1}' < $file); do
-    if [ "$line" == "$bookmark" ]; then
-        alreadybookmarked=1
-    fi
-done
+grep "^$bookmark #" "$file" && notify-send "Oops. Already bookmarked!" && exit
 
-if [ $alreadybookmarked != 0 ]; then
-    notify-send "Oops. Already bookmarked!"
+mark="$(echo " " | dmenu -p 'New bookmark:' -fn 'JetBrainsMonoNerdFont-14')"
+[ -z "$mark" ] && exit
+
+if [ "$mark" != " " ]; then
+    notify-send "'$mark' bookmark added!" "$bookmark is now saved to the file."
+    echo "$bookmark # $mark" >> "$file"
 else
-    mark=$(echo -e "\nquit" | dmenu -p 'Name bookmark:' -fn 'JetBrainsMonoNerdFont-14')
-    if [ "$mark" != "quit" ]; then
-        if [ "$mark" != "" ]; then
-            notify-send "'$mark' bookmark added!" "$bookmark is now saved to the file."
-            echo -e "$bookmark # $mark" >> "$file"
-        else
-            notify-send "Bookmark added!" "$bookmark is now saved to the file."
-            echo "$bookmark" >> "$file"
-        fi
-    fi
+    notify-send "Bookmark added!" "$bookmark is now saved to the file."
+    echo "$bookmark #" >> "$file"
 fi
