@@ -15,13 +15,13 @@ super + Escape
 
 # APPS
 
-super + r; {n,t,f,d,c,p,g,i,o}
-    {nitrogen,telegram-desktop,pcmanfm,discord,galculator,pycharm,gpick,flatpak run com.github.rajsolai.textsnatcher,obs}
+super + r; {n,t,f,d,c,p,g,i,o,w,v}
+    {nitrogen,Forkgram,pcmanfm,discord,clion,pycharm,gpick,flatpak run com.github.rajsolai.textsnatcher,obs,sxiv -t ~/pix/wall,virt-manager}
 
 super + d
     dmenu_run -fn 'JetBrainsMonoNerdFont-14'
 
-super + y
+alt + Tab
     rofi -show window
 
 super + shift +  e
@@ -36,20 +36,11 @@ super + w
 super + shift + w
     librewolf --private-window
 
-super + x
-    xkill
-
 Print
-    flameshot gui
+	maim --select | tee ~/pix/ss/$(date +%Y-%m-%d_%M-%S).jpg | xclip -sel c -t image/jpg
 
-ctrl + Print
-	flameshot full -p ~/Pictures/screenshots
-
-super + g
-    thunar
-
-super + p
-    ~/.scripts/togglepolybar
+super + Print
+	maim | tee ~/pix/ss/$(date +%Y-%m-%d_%M-%S%s).jpg | xclip -sel c -t image/jpg
 
 # Close all notifications
 
@@ -59,21 +50,21 @@ ctrl + space
 # SYSTEM
 
 super + 0; {shift+s,s,r,l,h}
-    {sudo shutdown now,systemctl suspend,sudo reboot,xlck,systemctl hibernate}
+    {sudo shutdown now,systemctl suspend,sudo reboot,slock & xset dpms force off ; mpc pause,systemctl hibernate}
 
 super + s
-    systemctl suspend
+     mpc pause ; systemctl suspend
 
 # AUDIO
 
-ctrl + F2
-    amixer -D pulse sset Master 5%-; dunstctl close-all; showvolume
+# ctrl + F2
+#     amixer -D pulse sset Master 5%-; dunstctl close-all; showvolume
 
-ctrl + F3
-    amixer -D pulse sset Master 5%+; dunstctl close-all; showvolume
+# ctrl + F3
+#     amixer -D pulse sset Master 5%+; dunstctl close-all; showvolume
 
-ctrl + F4
-    amixer -D pulse sset Master toggle; dunstctl close-all; showvolume
+# ctrl + F4
+#     amixer -D pulse sset Master toggle; dunstctl close-all; showvolume
 
 # PLAYER
 
@@ -89,19 +80,46 @@ alt + F6
 alt + F8
     playerctl next
 
-# MOC
+# # MOC
 
-F1
-    mocp --toggle-pause
+# F1
+#     mocp --toggle-pause
 
-ctrl + F5
-    mocp --pause
+# ctrl + F5
+#     mocp --pause
 
-ctrl + F6
-    mocp --previous
+# ctrl + F6
+#     mocp --previous
 
-F8
-    mocp --next
+# F8
+#     mocp --next
+
+# Pause audio
+super + p
+	mpc toggle
+super + shift + p
+	mpc pause
+# Changes to next/previous tracks
+super + {comma,period}
+	mpc {prev,next}
+# Restart track
+super + shift + less
+	mpc seek 0%
+# Seek foward in song
+super + {_,shift +} bracketright
+	mpc seek +{10,120}
+# Seek backward in song
+super + {_,shift +} bracketleft
+	mpc seek -{10,60}
+# Increase volume
+super + {equal,plus}
+	amixer sset Master {5,15}%+ && volumenotify
+# Decrease volume
+super {_,shift +} + minus
+	amixer sset Master {5,15}%- && volumenotify
+
+super + shift + m
+	amixer sset Master toggle && volumenotify
 
 # SCRATCHPADS
 
@@ -109,7 +127,7 @@ super + t
     tdrop -am -w 60% -h 60% -x 20% -y 20% -n term alacritty --class=scratchpad
 
 super + m
-    tdrop -am -w 60% -h 60% -x 20% -y 20% -n mus alacritty --class=scratchpad -e mocp
+    tdrop -am -w 60% -h 60% -x 20% -y 20% -n mus alacritty --class=scratchpad -e ncmpcpp
 
 super + shift + m
     alacritty -e mocp
@@ -117,19 +135,35 @@ super + shift + m
 super + c
     tdrop -am -w 60% -h 60% -x 20% -y 20% -n fm alacritty --class=scratchpad -e ranger
 
-super + shift + c
-    alacritty -e ranger
+# super + shift + c
+    # alacritty -e ranger
 
 # SCRIPTS
 
 super + Insert
-    xdotool type $(grep -v '^#' ~/.local/share/bookmarks | dmenu -i -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
+    grep -v '^#' ~/.local/share/bookmarks | dmenu -i -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1 | xclip -sel c
 
 super + shift + Insert
-    xdotool type $(grep -v '^#' ~/.local/share/see-later-bookmarks | dmenu -i -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1)
+    grep -v '^#' ~/.local/share/see-later-bookmarks | dmenu -i -l 50 -p 'Select bookmark:' -fn 'JetBrainsMonoNerdFont-14' | cut -d ' ' -f1 | xclip -sel c
+
+super + shift + f
+    librewolf $(xclip -o -sel c)
 
 super + b
     bookmarkthis
 
 super + e
-    editconfig
+    editconfig --dmenu
+
+super + shift + d
+    $TERMINAL -e confdiff
+
+super + o
+    killall xcompmgr || xcompmgr
+
+
+XF86Calculator
+	$TERMINAL -e bc -lq
+
+super + a
+    killall dunst ; dunst --config $HOME/.config/dunst/dunstrc && notify-send "dunst" "restarted"
