@@ -16,6 +16,7 @@ case $1 in
     *) echo -e "Invalid option: $1\\n" && err ;;
 esac
 
-configs="$(< ~/.local/share/configs)"
+# todo: add check if config exists
+configs="$(cat ~/.local/share/configs)"
 choice="$(echo "$configs" | awk '{print $1}' | sort | eval "$selector" )"
 [ -n "$choice" ] && eval "$editor $(echo "$configs" | grep "$choice" | awk '{print $NF}' | head -n1)"
