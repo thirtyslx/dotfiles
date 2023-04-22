@@ -143,6 +143,18 @@ nnoremap <C-_> <Plug>CommentaryLinej
 " Goyo
 nnoremap <leader>g :Goyo<CR>
 
+" Check file in shellcheck:
+map <leader>s :!clear && shellcheck -x %<CR>
+"
+" Replace all is aliased to S.
+nnoremap S :%s//g<Left><Left>
+
+" Compile document, be it groff/LaTeX/markdown/etc.
+map <leader>c :w! \| !compiler "%:p"<CR>
+
+" Open corresponding .pdf/.html or preview
+map <leader>p :!openout "%:p"<CR>
+
 "#####################################################
 "################         LETs        ################
 "#####################################################
@@ -151,6 +163,7 @@ nnoremap <leader>g :Goyo<CR>
 let g:airline_powerline_fonts = 1
 " let g:airline_theme = 'onedark'
 " let g:airline_theme = 'base16_dracula'
+let g:airline_theme = 'wal'
 
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -184,10 +197,13 @@ autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " Disable Coc
-autocmd BufReadPost * silent CocDisable
+"autocmd BufReadPost * silent CocDisable
 
 " Dwm autocompile
 " autocmd BufWritePost ~/.local/src/dwm/config.h !cd ~/.local/src/dwm/; echo ""; sudo make install
+
+" Runs a script that cleans out tex build files whenever I close out of a .tex file.
+autocmd VimLeave *.tex !texclear %
 
 "#####################################################
 "################      FUNCTIONS      ################
