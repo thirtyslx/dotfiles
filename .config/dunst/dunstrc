@@ -39,14 +39,28 @@
     # the top and down respectively.
     # The width can be negative.  In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "0x0-30+20"
+    ### Geometry ###
+
+    # dynamic width from 0 to 300
+    # width = (0, 300)
+    # constant width of 300
+    width = (300, 600) #(200, 300)
+
+    # The maximum height of a single notification, excluding the frame.
+    height = 300
+
+    # Position the notification in the top right corner
+    origin = top-right
+
+    # Offset from the origin
+    offset = 10x50
 
     # Show how many messages are currently hidden (because of geometry).
     indicate_hidden = yes
 
     # Shrink window if it's smaller than the width.  Will be ignored if
     # width is 0.
-    shrink = no
+    shrink = yes
 
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing window manager is
@@ -174,11 +188,14 @@
     # Align icons left/right/off
     icon_position = left
 
+    # Scale smaller icons up to this size, set to 0 to disable. If max_icon_size also specified, that has the final say
+    min_icon_size = 45
+
     # Scale larger icons down to this size, set to 0 to disable
-    max_icon_size = 32
+    max_icon_size = 128
 
     # Paths to default icons.
-    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+    # icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
 
     ### History ###
 
@@ -261,7 +278,7 @@
     # using the resolution and physical size. This might be useful in setups
     # where there are multiple screens with very different dpi values.
     per_monitor_dpi = false
-
+# no
 [shortcuts]
 
     # Shortcuts are specified as [modifier+][modifier+]...key
@@ -421,3 +438,11 @@
 #    set_stack_tag = "volume"
 #
 # vim: ft=cfg
+[songinfo]
+    stack_tag = songinfo
+    # summary = *Now*
+    # word_wrap = false
+    fullscreen = show
+[volumenotify]
+   stack_tag = volumechange
+    fullscreen = show
