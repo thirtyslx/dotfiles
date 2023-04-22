@@ -47,7 +47,7 @@ set $ws9 9:pass
 # bind program to workspace
 assign [class="TelegramDesktop"] $ws3
 assign [class="VirtualBox Manager"] $ws5
-assign [class="virt-manager"] $ws5
+assign [class="Virt-manager"] $ws5
 assign [class="obs"] $ws7
 assign [class="KeePassXC"] $ws9
 
