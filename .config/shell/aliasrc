@@ -26,12 +26,16 @@ alias \
         doomupgrade="~/.emacs.d/bin/doom upgrade" \
         doompurge="~/.emacs.d/bin/doom purge"
 
-# Changing "ls" to "exa"
+# Changing ls
 alias \
-        la="exa -a --icons --color=always --group-directories-first" \
-        ls="exa -l  --icons --color=always --group-directories-first" \
-        lt="exa -aT --color=always --group-directories-first" \
-        l.="exa -a | egrep '^\.'"
+        ls="ls -h --color=auto --group-directories-first" \
+        la="ls -Ah --color=auto --group-directories-first" \
+        ll="ls -hl --color=auto --group-directories-first" \
+        l.="exa -a | egrep '^\.'" \
+        els="exa --icons --color=always --group-directories-first" \
+        ela="exa -a --icons --color=always --group-directories-first" \
+        lt="exa -aT --level=2 --color=always --group-directories-first"
+        # lt="ls -R" \
 
 # pacman and yay
 alias \
@@ -57,13 +61,13 @@ alias \
         egrep="egrep --color=auto" \
         fgrep="fgrep --color=auto" \
         pacman="pacman --color always" \
-        ip="ip -color=auto"
+        ip="ip -color=always"
 
 # confirm before overwriting something
-alias \
-        cp="cp -i" \
-        mv="mv -i" \
-        rm="rm -i"
+# alias \
+#         cp="cp -i" \
+#         mv="mv -i" \
+#         rm="rm -i"
 
 # Adding flags
 alias \
@@ -71,7 +75,8 @@ alias \
         free="free -m" \
         lynx="lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss -vikeys" \
         ncmpcpp="ncmpcpp ncmpcpp_directory=$HOME/.config/ncmpcpp/" \
-        mocp="mocp -M "$XDG_CONFIG_HOME"/moc -O MOCDir="$XDG_CONFIG_HOME"/moc"
+        mocp="mocp -M ~/.config/moc -O MOCDir=~/.config/moc"
+        # mocp="mocp -M "$XDG_CONFIG_HOME"/moc -O MOCDir="$XDG_CONFIG_HOME"/moc"
 
 # ps
 alias \
@@ -93,8 +98,8 @@ alias \
         pull="git pull origin" \
         push="git push origin" \
         stat="git status" \
-        tag="git tag" \
         newtag="git tag -a"
+        # tag="git tag" \
 
 # yt-dlp
 alias \
@@ -114,8 +119,14 @@ alias \
 # Switch between shells
 alias \
         tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'" \
-        tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'" \
+        tozsh="sudo chsh  $USER -s /bin/zsh && echo 'Now log out.'" \
         tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
+
+# Source shell configs
+alias \
+        sb="source ~/.bashrc" \
+        sz="source ~/.config/zsh/.zshrc" \
+        sf="source ~/.config/fish/config.fish"
 
 # Switch between display managers
 alias \
@@ -129,12 +140,12 @@ alias \
         e="$EDITOR" \
         v="vim" \
         ka="killall" \
-        xp="xprop | grep WM_CLASS" \
+        xp="xprop WM_CLASS" \
         p="sudo pacman" \
-        r="/bin/rm" \
         g="git" \
         s="startx" \
-        c="clear"
+        c="clear" \
+        r="ranger"
 
 # root privileges
 alias doas="doas --"
@@ -152,28 +163,19 @@ alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
 alias merge="xrdb -merge ~/.Xresources"
 
 # bare git repo alias for dotfiles
-alias config="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"
+alias dot="/usr/bin/git --git-dir=$HOME/.dots --work-tree=$HOME"
 
 # the terminal rickroll
 alias rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash"
 
 # Make multiple directorys at once
-alias mkd="mkdir -p"
-
-# Mocp must be launched with bash instead of zsh
-alias mocp="bash -c mocp"
-
-# Fast cds
-alias sc="cd ~/.scripts"
-alias bm="vim ~/.local/share/bookmarks"
-alias qa="~/.config/qtile/autostart.sh"
-alias sl="cd ~/.config/suckless"
+alias mkdir="mkdir -p"
 
 # Copy the last command
 alias lc='echo "$(history | head -2 | sed "s/  [0-9]*  //;2d")" > /tmp/cmdoutput && cat /tmp/cmdoutput | xsel -b && notify-send "Terminal" "Last Command Copied"'
 
 # Userlist
-alias userlist="cut -d: -f1 /etc/passwd | sort"
+alias userlist="< /etc/passwd | column -t -s : | sort"
 
 # Update grub config
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
@@ -196,44 +198,46 @@ alias logout="pkill -KILL -u $USER"
 # Remove all latex temp files
 alias latexclear="rm -f *.aux; rm -f *.log; rm -f *.toc"
 
+# clang compiler
+alias clangg="clang++ --std=c++20 -O3 -fsanitize=address,undefined -Wall -Wextra -Werror"
+
 # Short command for pushing configs
-cfg () {
-config add "$1"
-config commit -m "$2"
-config push origin main
-}
+cfg() { config add "$1"; config commit -m "$2" ; }
+
+alias hst="history 1 -1 | cut -c 8- | sort | uniq | fzf | tr -d '\n' | xclip -sel c"
+alias ec="editconfig --fzf"
+
+#alias sxiv="devour sxiv"
+#alias mpv="devour mpv"
+#alias zathura="devour zathura"
+#alias lowriter="devour lowriter"
+#alias neofetch="neofetch --ascii_distro arch"
+# Fast cds
+alias sc="cd ~/.local/bin               && ls -a --color=always"
+alias bm="vim ~/.local/share/bookmarks"
+alias qa="~/.config/qtile/autostart.sh"
+alias sl="cd ~/.config/suckless         && ls -a --color=always"
+alias src="cd ~/.local/src              && ls -a --color=always"
+alias cf="cd ~/.config                  && ls -a --color=always"
+
+
+alias o="xdg-open"
+alias ss="sudo systemctl"
+alias cal="cal -m"
+# close aria2 after download
+alias aria2c="aria2c --seed-time=0"
+alias y="xclip -sel c"
+alias P="xclip -o"
+alias ex="extract"
+alias pyenv="[ ! -d venv ] && python -m venv venv ; . ./venv/bin/activate ; pip install -U pip"
+alias pyreq="[ ! -f requirements.txt ] && echo 'requirements.txt not found' && return 1 ; [ -d venv ] && ./venv/bin/pip install -r requirements.txt -U pip || echo 'venv no found' && return 1"
+alias pygenreq="[ -d venv ] && ./venv/bin/pip freeze > requirements.txt"
+alias pyall="pyenv && pyreq"
 
 # Backup
-bak () {
-cp $1 $1.bak
-}
+bak() { cp -rf "$1" "$1.bak" ; }
 
-# Archive extraction
-ex () {
-if [ -f $1 ] ; then
-    case $1 in
-        *.tar.bz2)   tar xjf $1   ;;
-        *.tar.gz)    tar xzf $1   ;;
-        *.bz2)       bunzip2 $1   ;;
-        *.rar)       unrar x $1   ;;
-        *.gz)        gunzip $1    ;;
-        *.tar)       tar xf $1    ;;
-        *.tbz2)      tar xjf $1   ;;
-        *.tgz)       tar xzf $1   ;;
-        *.zip)       unzip $1     ;;
-        *.Z)         uncompress $1;;
-        *.7z)        7z x $1      ;;
-        *.deb)       ar x $1      ;;
-        *.tar.xz)    tar xf $1    ;;
-        *.tar.zst)   tar xf $1    ;;
-        *)           echo "'$1' cannot be extracted via ex()" ;;
-    esac
-else
-    echo "'$1' is not a valid file"
-fi
-}
-
-shrinkpdf () {
+shrinkpdf() {
 gs  -q -dNOPAUSE -dBATCH -dSAFER \
     -sDEVICE=pdfwrite \
     -dCompatibilityLevel=1.4 \
@@ -246,6 +250,22 @@ gs  -q -dNOPAUSE -dBATCH -dSAFER \
     -dGrayImageResolution=150 \
     -dMonoImageDownsampleType=/Bicubic \
     -dMonoImageResolution=150 \
-    -sOutputFile=$1.shrink \
-     $1
+    -sOutputFile="compressed-$1" \
+     "$1"
+mv "compressed-$1" "$1" -i
+}
+
+fcd() {
+    dir="$(find "$HOME" -type d | fzf)"
+    [ -z "$dir" ] && cd "$dir" || return
+}
+
+ren() { perl-rename 's/$1//g' -- * ; }
+
+countdown() {
+    n=$1
+    while [ "$n" -gt 0 ]; do
+        echo "$n" | figlet -c | lolcat && sleep 1
+        n=$((n-1))
+    done
 }
