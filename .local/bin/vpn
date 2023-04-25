@@ -1,0 +1,4 @@
+#!/bin/sh
+
+{ sudo wg-quick up myvpn && notify-send -h string:x-dunst-stack-tag:"vpn" "VPN" "turned ON" ;} || \
+    { sudo wg-quick down myvpn && notify-send -h string:x-dunst-stack-tag:"vpn" "VPN" "turned OFF" ;}

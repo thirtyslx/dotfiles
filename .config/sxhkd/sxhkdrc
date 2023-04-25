@@ -167,3 +167,6 @@ XF86Calculator
 
 super + a
     killall dunst ; dunst --config $HOME/.config/dunst/dunstrc && notify-send "dunst" "restarted"
+
+super + v
+    vpn
