@@ -158,6 +158,7 @@ map <leader>p :!openout "%:p"<CR>
 "#####################################################
 "################         LETs        ################
 "#####################################################
+let &viminfofile = expand('~/.local/share/nvim/shada/main.shada')
 
 " Air-line
 let g:airline_powerline_fonts = 1
