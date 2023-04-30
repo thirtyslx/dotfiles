@@ -163,7 +163,7 @@ alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
 alias merge="xrdb -merge ~/.Xresources"
 
 # bare git repo alias for dotfiles
-alias dot="/usr/bin/git --git-dir=$HOME/.dots --work-tree=$HOME"
+alias dot="/usr/bin/git --git-dir=$HOME/.local/share/dotfiles --work-tree=$HOME"
 
 # the terminal rickroll
 alias rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash"
