@@ -37,7 +37,7 @@ super + shift + w
     librewolf --private-window
 
 Print
-	maim --select | tee ~/pix/ss/$(date +%Y-%m-%d_%M-%S).jpg | xclip -sel c -t image/jpg
+	maim --select | tee ~/pix/ss/tmp/$(date +%Y-%m-%d_%M-%S).jpg | xclip -sel c -t image/jpg
 
 super + Print
 	maim | tee ~/pix/ss/$(date +%Y-%m-%d_%M-%S%s).jpg | xclip -sel c -t image/jpg
@@ -101,7 +101,7 @@ super + shift + p
 	mpc pause
 # Changes to next/previous tracks
 super + {comma,period}
-	mpc {prev,next}
+    mpc {prev,next}
 # Restart track
 super + shift + less
 	mpc seek 0%
