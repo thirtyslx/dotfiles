@@ -36,7 +36,7 @@ bind -m vi-insert "Control-l: clear-screen"
 bind "set completion-ignore-case on"
 
 ### PROMPT ###
-#export PS1="\e[1;34m \w\e[m\e[0;35m $ \e[m"
+export PS1="\e[1;34m \w\e[m\e[0;35m $ \e[m"
 
 ### PATH ###
 if [ -d "$HOME/.bin" ] ;
@@ -255,4 +255,4 @@ alias ducks="du -cks * | sort -rn | head"
 alias logout="pkill -KILL -u $USER"
 
 ### STARSHIP PROMT ###
-eval "$(starship init bash)"
+#eval "$(starship init bash)"
