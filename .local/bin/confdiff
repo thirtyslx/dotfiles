@@ -9,10 +9,11 @@ file="$(echo "$changes" | dmenu -l 15 -p 'Select config:' -fn 'JetBrainsMonoNerd
 $git diff "$file"
 
 echo "What to do with \`$file\`?"
-echo "[c]ommit, [r]estore, [n]ext file: "
+echo "[e]dit, [c]ommit, [r]estore, [n]ext file: "
 read -r choice
 
 case "$choice" in
+    e) $EDITOR "$file" ;;
     c)  printf "Enter commit message:\n%s" "$PS2"
         read -r commit_message
         [ -z "$commit_message" ] && exit 1
