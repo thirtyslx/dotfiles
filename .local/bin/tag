@@ -1,0 +1,32 @@
+#!/bin/sh
+
+while getopts "a:t:A:n:N:d:g:c:" o; do case "$o" in
+    a) artist="$OPTARG" ;;
+    t) title="$OPTARG" ;;
+    A) album="$OPTARG" ;;
+    n) track="$OPTARG" ;;
+    N) total="$OPTARG" ;;
+    d) date="$OPTARG" ;;
+    g) genre="$OPTARG" ;;
+    c) comment="$OPTARG" ;;
+esac done
+
+shift $((OPTIND-1))
+
+file="$1"
+
+[ -f "$file"] || echo "Provide file to tag, please" && exit 1
+[ -z "$artist"] && echo "Enter an artist." && read -r artist
+[ -z "$title"] && echo "Enter n title." && read -r title
+[ -z "$album"] && echo "Enter an album." && read -r album
+[ -z "$track"] && echo "Enter a track number." && read -r artist
+
+temp="/tmp/tag-$(date +%s)"
+cp "$file" "$temp" && ffmpeg -i "$temp" -map 0 -y -codec copy \
+	-metadata artist="$artist" \
+    -metadata title="$title" \
+	-metadata album="$album" \
+	-metadata track="${track}${total:+/"$total"}" \
+    ${date:+-metadata date="$date"} \
+	${genre:+-metadata genre="$genre"} \
+	${comment:+-metadata comment="$comment"} "$file" && rm -f "$temp"
