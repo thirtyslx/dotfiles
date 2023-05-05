@@ -16,7 +16,7 @@ super + Escape
 # APPS
 
 super + r; {n,t,f,d,c,p,g,i,o,w,v}
-    {nitrogen,Forkgram,pcmanfm,discord,clion,pycharm,gpick,flatpak run com.github.rajsolai.textsnatcher,obs,sxiv -t ~/pix/wall,virt-manager}
+    {nitrogen,Forkgram,pcmanfm,discord,webcam,pycharm,gpick,flatpak run com.github.rajsolai.textsnatcher,obs,sxiv -t ~/pix/wall,virt-manager}
 
 super + d
     dmenu_run -fn 'JetBrainsMonoNerdFont-14'
