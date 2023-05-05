@@ -1,0 +1,26 @@
+#!/bin/sh
+
+msgTag="songinfo"
+
+music_dir="$HOME/mus"
+previewdir="${XDG_CONFIG_HOME:-$HOME/.config}/ncmpcpp/previews"
+filename="$(mpc --format "$music_dir"/%file% current)"
+previewname="$previewdir/$(mpc --format %album% current | base64).png"
+mkdir -p "$previewdir"
+# echo "previewname='$previewname'"
+# echo "previewdir='$previewdir'"
+
+[ -e "$previewname" ] || ffmpeg -y -i "$filename" -an -vf scale=128:128 "$previewname" > /dev/null 2>&1
+# [ -e "$previewname" ] && echo "preview exists" || echo "no preview!"
+# [ -e "$previewname" ] || ffmpeg -i "$" -filter:v scale=-2:250 -an output.jpeg
+
+[ -f "$previewname" ] || previewname=""
+pgrep -x dunst > /dev/null 2>&1 && dunstctl close-all
+format='\n%title%\n%artist%\n\[ %album% \]'
+format='\n%title%\n%artist% \[ %album% \]'
+format='\n%artist% \[ %album% \]'
+title="$(mpc --format '%title%' current)"
+album="$(mpc --format '%album%' current)"
+[ ! "$title" = "$album" ] && format='\n%artist% - %album%' || format="\n%title%\n%artist%"
+# [ "$(mpc -f '%title%')" = "$(mpc -f '%album%')" ] && notify-send "Now Playing" "$(mpc --format '%title%\n%artist%' current)" -i "$previewname" ||
+notify-send -h string:x-dunst-stack-tag:$msgTag "$title" "$(mpc --format "$format" current)" -i "$previewname" # -t 100000
