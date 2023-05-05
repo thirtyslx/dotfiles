@@ -5,7 +5,8 @@ echo "Chosing a random wallpaper…"
 wall="$1"
 cp -f $wall ~/.config/wall.png
 echo "Generating pywal color schemes…"
-wal -i $wall >/dev/null -o ~/.config/wal/postrun
+wal -i $wall >/dev/null
+#-o ~/.config/wal/postrun
 echo "Generating wal-telegram color schemes…"
 wal-telegram $wall >/dev/null
 echo "Setting up wallpaper…"
