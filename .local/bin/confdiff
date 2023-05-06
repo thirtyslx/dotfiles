@@ -1,12 +1,11 @@
 #!/bin/sh
 
-git="/usr/bin/git --git-dir=$HOME/.local/share/dotfiles --work-tree=$HOME"
-changes="$($git status --porcelain)"
+changes="$(git status --porcelain)"
 
 file="$(echo "$changes" | dmenu -l 15 -p 'Select config:' -fn 'JetBrainsMonoNerdFont-14' | awk '{print $2}')"
 [ -z "$file" ] && exit 1
 
-$git diff "$file"
+git diff "$file"
 
 echo "What to do with \`$file\`?"
 echo "[e]dit, [c]ommit, [r]estore, [n]ext file: "
@@ -17,10 +16,10 @@ case "$choice" in
     c)  printf "Enter commit message:\n%s" "$PS2"
         read -r commit_message
         [ -z "$commit_message" ] && exit 1
-        $git add "$file"
-        $git commit -m "$commit_message"
+        git add "$file"
+        git commit -m "$commit_message"
         ;;
-    r) $git restore "$file" ;;
+    r) git restore "$file" ;;
     n) "$0 $@" ;;
     *) echo "Unrecognized option!" && exit 1 ;;
 esac
