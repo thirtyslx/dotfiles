@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC2139
 
 # Use $XINITRC variable if file exists.
 [ -f "$XINITRC" ] && alias startx="startx $XINITRC"
@@ -233,6 +234,7 @@ alias pyenv="[ ! -d venv ] && python -m venv venv ; . ./venv/bin/activate ; pip 
 alias pyreq="[ ! -f requirements.txt ] && echo 'requirements.txt not found' && return 1 ; [ -d venv ] && ./venv/bin/pip install -r requirements.txt -U pip || echo 'venv no found' && return 1"
 alias pygenreq="[ -d venv ] && ./venv/bin/pip freeze > requirements.txt"
 alias pyall="pyenv && pyreq"
+se() { $EDITOR ~/.local/bin/"$(find ~/.local/bin/ -type f -printf '%P\n' | fzf)" ;}
 
 # Backup
 bak() { cp -rf "$1" "$1.bak" ; }
