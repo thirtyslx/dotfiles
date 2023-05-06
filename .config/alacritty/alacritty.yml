@@ -132,7 +132,7 @@ font:
     #   - (Windows) Consolas
     # family: Source Code Pro
     # family: CodeNewRoman Nerd Font
-    family: Hack
+    family: Hack Nerd Font
     # family: JetBrains Mono
     # family: UbuntuMono Nerd Font
     # family: Mononoki Nerd Font
@@ -148,7 +148,7 @@ font:
     # value specified for the normal font.
     # family: Source Code Pro
     # family: CodeNewRoman Nerd Font
-    family: Hack
+    family: Hack Nerd Font
     # family: JetBrains Mono
     # family: UbuntuMono Nerd Font
     # family: Mononoki Nerd Font
@@ -165,7 +165,7 @@ font:
     # value specified for the normal font.
     # family: Source Code Pro
     # family: CodeNewRoman Nerd Font
-    family: Hack
+    family: Hack Nerd Font
     # family: JetBrains Mono
     # family: UbuntuMono Nerd Font
     # family: Mononoki Nerd Font
@@ -181,7 +181,7 @@ font:
     # value specified for the normal font.
     # family: Source Code Pro
     # family: CodeNewRoman Nerd Font
-    family: Hack
+    family: Hack Nerd Font
     # family: JetBrains Mono
     # family: UbuntuMono Nerd Font
     # family: Mononoki Nerd Font
