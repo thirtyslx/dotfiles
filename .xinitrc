@@ -33,8 +33,9 @@ xsetroot -name "thirtysix's dwm build [36\"]" &
 mpd &
 #startup &
 # startup &
-#unclutter &
-#xcompmgr
+unclutter &
+xcompmgr &
+xwallpaper --zoom $(readlink ~/.local/share/wall.png) &
 
 # exec bspwm
 #exec dwm
