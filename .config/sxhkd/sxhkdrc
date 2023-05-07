@@ -156,7 +156,7 @@ super + e
     editconfig --dmenu
 
 super + shift + d
-    $TERMINAL -e confdiff
+    confdiff
 
 super + o
     killall xcompmgr || xcompmgr

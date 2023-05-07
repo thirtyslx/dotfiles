@@ -1,25 +1,17 @@
 #!/bin/sh
 
-changes="$(git status --porcelain)"
+changes="$(git -C "$HOME" status --porcelain | cut -d' ' -f3)"
+file="$(readlink -f $(echo "$changes" | dmenu -l 15 -p 'Select config:' -fn 'JetBrainsMonoNerdFont-14'))"
+[ -f "$file" ] || exit 1
+printf "file=\`%s\`" "$file"
 
-file="$(echo "$changes" | dmenu -l 15 -p 'Select config:' -fn 'JetBrainsMonoNerdFont-14' | awk '{print $2}')"
-[ -z "$file" ] && exit 1
-
-git diff "$file"
-
-echo "What to do with \`$file\`?"
-echo "[e]dit, [c]ommit, [r]estore, [n]ext file: "
-read -r choice
+$TERMINAL -e git diff "$file"
+choice=$(printf "edit\ncommit\nrestore\nnext file" | dmenu -l 15 -p "What to do with \`$file\`?" -fn 'JetBrainsMonoNerdFont-14')
 
 case "$choice" in
-    e) $EDITOR "$file" ;;
-    c)  printf "Enter commit message:\n%s" "$PS2"
-        read -r commit_message
-        [ -z "$commit_message" ] && exit 1
-        git add "$file"
-        git commit -m "$commit_message"
-        ;;
-    r) git restore "$file" ;;
-    n) "$0 $@" ;;
-    *) echo "Unrecognized option!" && exit 1 ;;
+    edit) $TERMINAL -e "$EDITOR $file" ;;
+    commit) git add "$file" && git commit ;;
+    restore) git restore "$file" && pgrep -x dunst && notify-send "Dotfiles" "Restored \`$file\`";;
+    "next file") "$0 $@" ;;
+    *) [ -n "$choice" ] && pgrep -x dunst && notify-send "Dotfiles" "Unrecognized option: \`$choice\`" ; exit 1 ;;
 esac
