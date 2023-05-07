@@ -256,11 +256,6 @@ gs  -q -dNOPAUSE -dBATCH -dSAFER \
 mv "compressed-$1" "$1" -i
 }
 
-fcd() {
-    dir="$(find "$HOME" -type d | fzf)"
-    [ -z "$dir" ] && cd "$dir" || return
-}
-
 ren() { perl-rename 's/$1//g' -- * ; }
 
 countdown() {

@@ -49,7 +49,11 @@ bindkey -s '^o' '^ulfcd\n'
 # Calculator
 bindkey -s '^a' '^ubc -lq\n'
 
-# Fuzzyfinder
+# FuzzyCd
+fcd() {
+    dir="$(find "$HOME" -type d | fzf)"
+    [ -d "$dir" ] && cd "$dir" || return 1
+}
 bindkey -s '^f' '^ufcd\n'
 
 # Fixing delete key
