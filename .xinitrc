@@ -27,7 +27,9 @@ setxkbmap us,ru -option 'grp:alt_shift_toggle' &
 #setxkbmap -option caps:swapescape &
 #setxkbmap -option caps:escape &
 # Replace capslock with escape
-xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' &
+#xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' &
+setxkbmap -option caps:super &
+xset r rate 300 30 &
 setbg ~/.config/wall.png && xdotool key Super+F5 &
 xsetroot -name "thirtysix's dwm build [36\"]" &
 mpd &
