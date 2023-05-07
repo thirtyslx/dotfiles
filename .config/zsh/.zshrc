@@ -69,9 +69,10 @@ bindkey -M visual '^[[P' vi-delete
 # Starship promt
 # eval "$(starship init zsh)"
 
-# Load syntax highlighting; should be last.
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
-
 # Fish like autosuggestions
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 [ -f "${XDG_CACHE_HOME:-$HOME/.cache}/wal/colors" ] && export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=$(sed -n '2p' $HOME/.cache/wal/colors)"
+
+# Load syntax highlighting; should be last.
+#source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
