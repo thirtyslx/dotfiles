@@ -1,6 +1,7 @@
 #!/bin/sh
 
 changes="$(git -C "$HOME" status --porcelain | cut -d' ' -f3)"
+[ -z "$changes" ] && notify-send "Dotfiles" "Nothing changed." && exit 0
 file="$(readlink -f $(echo "$changes" | dmenu -l 15 -p 'Select config:' -fn 'JetBrainsMonoNerdFont-14'))"
 [ -f "$file" ] || exit 1
 printf "file=\`%s\`" "$file"
@@ -10,7 +11,7 @@ choice=$(printf "edit\ncommit\nrestore\nnext file" | dmenu -l 15 -p "What to do 
 
 case "$choice" in
     edit) $TERMINAL -e "$EDITOR $file" ;;
-    commit) git add "$file" && git commit ;;
+    commit) git add "$file" && $TERMINAL -e git commit ;;
     restore) git restore "$file" && pgrep -x dunst && notify-send "Dotfiles" "Restored \`$file\`";;
     "next file") "$0 $@" ;;
     *) [ -n "$choice" ] && pgrep -x dunst && notify-send "Dotfiles" "Unrecognized option: \`$choice\`" ; exit 1 ;;
