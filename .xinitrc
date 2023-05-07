@@ -36,7 +36,9 @@ mpd &
 unclutter &
 xcompmgr &
 xwallpaper --zoom $(readlink ~/.local/share/wall.png) &
-
+pipewire &
+pipewire-pulse &
+wireplumber &
 # exec bspwm
 #exec dwm
 while type dwm >/dev/null ; do dwm && continue || break ; done
