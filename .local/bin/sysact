@@ -1,0 +1,10 @@
+#!/bin/sh
+# Script for system actions as suspend and hibernate
+# Both for systemd and other init systems
+
+case $(readlink -f /sbin/init) in
+    *systemd*) ctl=systemctl ;;
+    *) ctl=loginctl ;;
+esac
+
+$ctl "$1"

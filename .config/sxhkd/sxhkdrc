@@ -50,10 +50,10 @@ ctrl + space
 # SYSTEM
 
 super + 0; {shift+s,s,r,l,h}
-    {sudo shutdown now,systemctl suspend,sudo reboot,slock & xset dpms force off ; mpc pause,systemctl hibernate}
+    {sudo shutdown now,sysact suspend,sudo reboot,slock & xset dpms force off ; mpc pause,sysact hibernate}
 
 super + s
-     mpc pause ; systemctl suspend
+     mpc pause ; sysact suspend
 
 # AUDIO
 
