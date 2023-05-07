@@ -232,6 +232,8 @@ alias pyreq="[ ! -f requirements.txt ] && echo 'requirements.txt not found' && r
 alias pygenreq="[ -d venv ] && ./venv/bin/pip freeze > requirements.txt"
 alias pyall="pyenv && pyreq"
 se() { $EDITOR ~/.local/bin/"$(find ~/.local/bin/ -type f -printf '%P\n' | fzf)" ;}
+enable() { [ -d "/etc/runit/sv/$1" ] && sudo ln -s "/etc/runit/sv/$1" /run/runit/service/ ;}
+disable() { [ -L "$1" ] && sudo rm -f "/run/runit/service/$1" ;}
 
 # Backup
 bak() { cp -rf "$1" "$1.bak" ; }
