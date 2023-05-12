@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=Telegram Desktop
+Exec=/usr/bin/Forkgram %u

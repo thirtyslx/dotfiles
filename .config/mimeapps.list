@@ -1,0 +1,9 @@
+# Default applications, which xdg-open uses to open files
+# Desktop files can be found in ~/.local/share/applications/
+
+[Default Applications]
+
+text/plain=plain-text.desktop;
+application/x-shellscript=plain-text.desktop;
+application/pdf=zathura.desktop;
+x-scheme-handler/tg=tg.desktop;
