@@ -1056,7 +1056,7 @@ key_bindings:
   #- { key: B,                           mode: Vi|~Search, action: SemanticLeft            }
   #- { key: W,                           mode: Vi|~Search, action: SemanticRight           }
   #- { key: E,                           mode: Vi|~Search, action: SemanticRightEnd        }
-  #- { key: B,      mods: Shif- ~/.cache/wal/colors-alacritty.ymlt,         mode: Vi|~Search, action: WordLeft                }
+  #- { key: B,      mods: Shift,         mode: Vi|~Search, action: WordLeft                }
   #- { key: W,      mods: Shift,         mode: Vi|~Search, action: WordRight               }
   #- { key: E,      mods: Shift,         mode: Vi|~Search, action: WordRightEnd            }
   #- { key: Key5,   mods: Shift,         mode: Vi|~Search, action: Bracket                 }
@@ -1094,6 +1094,23 @@ key_bindings:
   - { key: End,       mods: Shift,         action: ScrollToBottom, mode: ~Alt  }
   - { key: F11,       mods: None,          action: ToggleFullscreen            }
 
+  # font size
+  - { key: K,         mods: Alt|Shift,  action: IncreaseFontSize }
+  - { key: J,         mods: Alt|Shift,  action: DecreaseFontSize }
+  - { key: Equals,    mods: Alt,        action: ResetFontSize    }
+  # scrollback
+  - { key: K,         mods: Alt,        action: ScrollLineUp     }
+  - { key: J,         mods: Alt,        action: ScrollLineDown   }
+  - { key: U,         mods: Alt,        action: ScrollPageUp     }
+  - { key: D,         mods: Alt,        action: ScrollPageDown   }
+  # clipboard
+  - { key: C,         mods: Alt,        action: Copy             }
+  - { key: V,         mods: Alt,        action: Paste            }
+  - { key: Insert,    mods: Shift,      action: Paste            }
+  # search
+  - { key: F,         mods: Alt,        action: SearchBackward   }
+
+  # - { key: Key,        mods: None,   chars: "?" }
 
   # (Windows only)
   #- { key: Return,   mods: Alt,           action: ToggleFullscreen }
