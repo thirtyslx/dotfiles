@@ -65,10 +65,10 @@ alias \
         ip="ip -color=always"
 
 # confirm before overwriting something
-# alias \
-#         cp="cp -i" \
-#         mv="mv -i" \
-#         rm="rm -i"
+alias \
+        cp="cp -iv" \
+        mv="mv -iv" \
+        rm="rm -iv"
 
 # Adding flags
 alias \
@@ -215,7 +215,7 @@ alias sc="cd ~/.local/bin               && ls -a --color=always"
 alias bm="vim ~/.local/share/bookmarks"
 alias qa="~/.config/qtile/autostart.sh"
 alias sl="cd ~/.config/suckless         && ls -a --color=always"
-alias src="cd ~/.local/src              && ls -a --color=always"
+alias rr="cd ~/.local/src              && ls -a --color=always"
 alias cf="cd ~/.config                  && ls -a --color=always"
 
 
