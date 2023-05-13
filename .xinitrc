@@ -31,7 +31,7 @@ xcape -e 'Super_L=Escape' &
 # Replace capslock with escape
 #xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' &
 xset r rate 300 30 &
-setbg ~/.config/wall.png && xwallpaper --zoom $(readlink ~/.local/share/wall.png) &
+setbg ~/.local/share/bg &
 xsetroot -name "thirtysix's dwm build [36\"]" &
 mpd &
 #startup &
