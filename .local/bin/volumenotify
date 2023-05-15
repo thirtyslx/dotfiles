@@ -1,18 +1,24 @@
-#!/bin/sh
-# changeVolume
+#!/usr/bin/env sh
+# Sends notification with current volume or mute state
 
 msgTag="volumechange"
-iconPath="/usr/share/icons/Adwaita/32x32/status"
+msgApp="volumechange"
+vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
 
-sink_id="$(pactl list short | grep "$(pactl get-default-sink)" | sed -n '1p' | awk '{print $1}')"
-volume="$(pactl get-sink-volume "$sink_id" | awk '{print $5}' | tr -d '%')"
-mute="$(pactl get-sink-mute "$sink_id" | awk '{print $2}')"
+echo "$vol" | grep "\[MUTED\]" && \
+    notify-send -a "$msgApp" -t 1000 -h "string:x-dunst-stack-tag:$msgTag" "Volume: 🔇 muted" && exit 0
 
+vol="$(echo "$vol" | cut -d' ' -f2 | cut -d. -f2)"
+vol="${vol#0}"      # for ommitting `0` when value is lower than 10
 
-if [ "$volume" -eq 0 ] || [ "$mute" = "yes" ]; then
-    # Show the sound muted notification
-    notify-send -a "changeVolume" -h string:x-dunst-stack-tag:$msgTag -i audio-volume-high "Volume muted" --expire-time=1000
+if [ "$vol" -ge 70 ]; then
+    icon="🔊"
+elif [ "$vol" -ge 30 ]; then
+    icon="🔉"
+elif [ "$vol" -ge 1 ]; then
+    icon="🔈"
 else
-    # Show the volume notification
-    notify-send -a "changeVolume" -r 36063 -i audio-volume-high -h int:value:"$volume" "Volume: ${volume}" --expire-time=1000
+    icon="🔇"
 fi
+
+notify-send -a "$msgApp" -t 1000 -h "string:x-dunst-stack-tag:$msgTag" -h "int:value:$vol" "Volume: $icon$vol%"
