@@ -113,13 +113,12 @@ super + {_,shift +} bracketleft
 	mpc seek -{10,60}
 # Increase volume
 super + {equal,plus}
-	amixer sset Master {5,15}%+ && volumenotify
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ {5,15}%+ && volumenotify
 # Decrease volume
 super {_,shift +} + minus
-	amixer sset Master {5,15}%- && volumenotify
-
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ {5,15}%- && volumenotify
 super + shift + m
-	amixer sset Master toggle && volumenotify
+	wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && volumenotify
 
 # SCRATCHPADS
 
