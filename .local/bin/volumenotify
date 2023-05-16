@@ -8,8 +8,8 @@ vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
 echo "$vol" | grep "\[MUTED\]" && \
     notify-send -a "$msgApp" -t 1000 -h "string:x-dunst-stack-tag:$msgTag" "Volume: 🔇 muted" && exit 0
 
-vol="$(echo "$vol" | cut -d' ' -f2 | cut -d. -f2)"
-vol="${vol#0}"      # for ommitting `0` when value is lower than 10
+vol="$(echo "$vol" | cut -d' ' -f2 | tr -d '.')"
+vol="${vol#0}" ; vol="${vol#0}"     # for ommitting `0` when value is lower than 10
 
 if [ "$vol" -ge 70 ]; then
     icon="🔊"
