@@ -37,7 +37,7 @@ super + shift + w
     librewolf --private-window
 
 Print
-	maim --select | tee ~/pix/ss/tmp/$(date +%Y-%m-%d_%M-%S).jpg | xclip -sel c -t image/jpg
+	maim -u --select | tee ~/pix/ss/tmp/$(date +%Y-%m-%d_%M-%S).jpg | xclip -sel c -t image/jpg
 
 super + Print
 	maim | tee ~/pix/ss/$(date +%Y-%m-%d_%M-%S%s).jpg | xclip -sel c -t image/jpg
