@@ -31,7 +31,7 @@ xset r rate 300 30 &
 #setxkbmap -option caps:escape &
 # Replace capslock with escape
 #xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' &
-setbg ~/.local/share/bg &
+setbg &
 xsetroot -name "thirtysix's dwm build [36\"]" &
 mpd &
 #startup &

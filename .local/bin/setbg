@@ -2,14 +2,15 @@
 
 echo "Chosing a random wallpaper…"
 # wall=$(find $HOME/pix/wall -type f | shuf -n 1)
-wall="$(readlink -f "$1")"
-colors="~/.config/wall.png"
-cp -f $wall ~/.config/wall.png
+wall="$(readlink -f "${1:-${XDG_DATA_HOME:-$HOME/.local/share}/bg}")"
+colors="$(readlink -f ~/.config/wall.png)"
+# cp -f $wall ~/.config/wall.png
 echo "Generating pywal color schemes…"
-wal -i $colors >/dev/null
+wal -i "$colors" >/dev/null
+sudo ~/.config/wal/postrun 2>/dev/null
 #-o ~/.config/wal/postrun
 echo "Generating wal-telegram color schemes…"
-wal-telegram $colors >/dev/null
+wal-telegram --background "$wall" $colors >/dev/null
 echo "Setting up wallpaper…"
 xwallpaper --zoom $wall
 # sed -i 'N;$!P;D' $HOME/.cache/wal/colors-wal-dwm.h
