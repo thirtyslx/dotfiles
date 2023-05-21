@@ -51,7 +51,7 @@ bindkey -s '^a' '^ubc -lq\n'
 
 # FuzzyCd
 fcd() {
-    dir="$(find "$HOME" -type d | fzf)"
+    dir="$(find "$HOME" -type d 2>/dev/null | fzf)"
     [ -d "$dir" ] && cd "$dir" || return 1
 }
 bindkey -s '^f' '^ufcd\n'
@@ -60,7 +60,7 @@ bindkey -s '^f' '^ufcd\n'
 bindkey "\e[3~" delete-char
 
 # Reverse search
-bindkey '^R' history-incremental-search-backward
+bindkey '^r' history-incremental-search-backward
 
 # Edit line in vim with ctrl-e:
 autoload edit-command-line; zle -N edit-command-line
@@ -68,7 +68,6 @@ bindkey '^e' edit-command-line
 bindkey -M vicmd '^[[P' vi-delete-char
 bindkey -M vicmd '\e[3~' vi-delete-char
 bindkey -M vicmd '^e' edit-command-line
-bindkey -M visual '^[[P' vi-delete
 
 # Starship promt
 # eval "$(starship init zsh)"
