@@ -2,7 +2,7 @@ alacritty       ~/.config/alacritty/alacritty.yml
 bspwm           ~/.config/bspwm/bspwmrc
 btop            ~/.config/btop/btop.conf
 dunst           ~/.config/dunst/dunstrc
-fish            ~/.config/fish/config
+fish            ~/.config/fish/config.fish
 i3              ~/.config/i3/config
 kitty           ~/.config/kitty/kitty.conf
 neofetch        ~/.config/neofetch/config.conf
