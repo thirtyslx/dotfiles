@@ -68,7 +68,7 @@ alias \
 alias \
         cp="cp -iv" \
         mv="mv -iv" \
-        rm="rm -iv"
+        rm="rm -Iv"
 
 # Adding flags
 alias \
