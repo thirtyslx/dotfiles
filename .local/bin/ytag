@@ -1,0 +1,123 @@
+#!/bin/sh
+
+# Script for interactive managing music metadata (id3 tags).
+# Supports cover arts. For detailed information read further.
+#
+# Dependencies (arch):
+# ffmpeg, opus-tools, yt-dlp
+#
+# Usefull after downloading song using yt-dlp with '--add-metadata' flag,
+# which puts youtube video url into 'comment' tag.
+# Script gets cover art by cutting it from this video thumbnail and compressing it.
+# Also picture with name '.<album>.jpg' in the same directory as song
+# would be be used instead as cover art if any.
+#
+# But often artist(s) name(s) contain real name(s) of artist(s), which is annoying
+# Example artist tag: artist1, artist2, djfjef, dkhfsjefjesg, somejunk, ...
+# Too keep only real artist include '2' into promp
+#
+# Promt can contain letters which are listed below with their meanings.
+# +------------+----------------------------------------------------------+
+# | number (n) | number of first(s) n artists (separated by ', ') to keep |
+# | a          | change artist                                            |
+# | A          | change album                                             |
+# | t          | change title                                             |
+# | f          | skip metadata change, but still embed cover art if any   |
+# +------------+----------------------------------------------------------+
+# (!) All of letters above and numbers can be in any order in promt.
+# If you will enter both 'A' and 't', you will be promted only for album
+# and title will be the same as album.
+#
+# Example promt: A3t
+# This will change album, title and keep first 3 artists
+
+old_IFS="$IFS"
+
+file="$1"
+[ ! -f "$file" ] && echo "No such file: '$file'" && exit 1
+
+readtag() { ffmpeg -i "$file" 2>&1 | awk -F': ' '/^\s*'"$1"'\s*:\s.*$/ {print $2}' ;}
+
+artist=$(readtag artist)
+title=$(readtag title)
+album=$(readtag album)
+track=$(readtag track)
+date=$(ffmpeg -i "$file" 2>&1 | awk -F': ' '/^\s*:\sReleased\son:\s.*$/ {print $3}' | tr -d '-')
+url=$(readtag comment | head -n1)
+
+red="\033[0;31m"
+green="\033[0;32m"
+blue="\033[0;34m"
+purple="\033[0;35m"
+cyan="\033[0;36m"
+nc="\033[0m"
+
+printf "File: $red'%s'$nc\nTitle: $green'%s'$nc\nArtist: $purple'%s'$nc\nAlbum: $cyan'%s'$nc\n" "${file##*/}" "$title" "$artist" "$album"
+printf "Enter your promt: " && read -r choice
+
+echo "$choice" | grep "f" >/dev/null && skip_changes="True"
+echo "$choice" | grep "A" >/dev/null && change_album="True"
+echo "$choice" | grep "a" >/dev/null && change_artist="True"
+echo "$choice" | grep "t" >/dev/null && change_title="True"
+
+artist_count=$(echo "$choice" | tr -d 'Aatf')
+artist_count="${artist_count:-1}"
+
+if [ -z "$skip_changes" ]; then
+    if [ -n "$change_artist" ]; then
+        printf "Enter artist: " && read -r new_artist
+    else
+        IFS=', '
+        for a in $artist; do
+            # shellcheck disable=2015
+            [ "$artist_count" -gt 0 ] && artist_count=$(( artist_count - 1 )) || break
+            if [ -z "$new_artist" ]; then
+                new_artist="$a"
+            else
+                new_artist="$new_artist, $a"
+            fi
+        done
+    fi
+else
+    new_artist="$artist"
+fi
+
+if [ -n "$change_album" ]; then
+    old_album="$album"
+    printf "Enter album: " && read -r album
+    [ -n "$change_title" ] && title="$album"
+elif [ -n "$change_title" ]; then
+    printf "Enter title: " && read -r title
+fi
+
+[ -n "$track" ] && track_str="$track. "
+ext="${file##*.}"
+new_file="$track_str$new_artist - $title.$ext"
+[ "$file" != "$new_file" ] && mv -f "$file" "$new_file" && echo "New file: $blue'$new_file'$nc"
+
+embed_art() {
+    temp="$(mktemp --suffix=.wav -p "$(dirname "$new_file")")"
+    trap 'rm -f $temp' HUP INT QUIT TERM PWR EXIT
+    ffmpeg -y -i "$new_file" "$temp"
+    opusenc --picture ".$album.jpg" --artist "${new_artist:-$artist}" --title "$title" --album "$album" --tracknumber "$track" --comment "date=$date" --comment "comment=$url" "$temp" "$new_file"
+}
+
+if [ -n "$change_album" ] && [ -f ".$old_album.jpg" ]; then
+    mv ".$old_album.jpg" ".$album.jpg"
+elif [ ! -f ".$album.jpg" ] && [ -n "$url" ]; then
+    {
+        yt-dlp --print thumbnail "$url" | xargs -I{} convert -adaptive-resize 1280x720 -crop 720x720+280+0 "{}" ".$album.jpg"
+        embed_art
+    } >/dev/null 2>&1 &
+    done_art="True"
+fi
+
+if [ -z "$skip_changes" ] && [ -z "$done_art" ]; then
+    if [ ! -f ".$album.jpg" ]; then
+        tag -a "$new_artist" -t "$title" -A "$album" -n "$track" -d "$date" "$new_file" >/dev/null 2>&1
+    else
+        embed_art >/dev/null 2>&1 &
+    fi
+fi
+
+IFS="$old_IFS"
