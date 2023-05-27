@@ -1095,8 +1095,8 @@ key_bindings:
   - { key: F11,       mods: None,          action: ToggleFullscreen            }
 
   # font size
-  - { key: K,         mods: Alt|Shift,  action: IncreaseFontSize }
-  - { key: J,         mods: Alt|Shift,  action: DecreaseFontSize }
+  - { key: K,         mods: Alt|Control,  action: IncreaseFontSize }
+  - { key: J,         mods: Alt|Control,  action: DecreaseFontSize }
   - { key: Equals,    mods: Alt,        action: ResetFontSize    }
   # scrollback
   - { key: K,         mods: Alt,        action: ScrollLineUp     }

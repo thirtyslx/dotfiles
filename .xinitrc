@@ -23,7 +23,7 @@ sxhkd &
 dunst --config $HOME/.config/dunst/dunstrc &
 # $HOME/.config/polybar/launch.sh bspwm &
 # setxkbmap -model pc104 -layout us,ru -variant ,, -option grp:alt_shift_toggle &
-setxkbmap us,ru -option 'grp:alt_space_toggle' && \
+setxkbmap us,ru -option 'grp:alt_shift_toggle' && \
 setxkbmap -option caps:super && \
 xcape -e 'Super_L=Escape' && \
 xset r rate 300 30 &
