@@ -30,7 +30,7 @@ set ignorecase           " Ingore case in search
 set smartcase            " Consider case if there is a upper case character
 set scrolloff=12         " Minimum number of lines to keep above and below the cursor
 " set colorcolumn=100      " Draws a line at the given line to keep aware of the line size
-set signcolumn=yes       " Add a column on the left. Useful for linting
+" set signcolumn=yes       " Add a column on the left. Useful for linting
 set cmdheight=1          " Give more space for displaying messages
 set updatetime=100       " Time in miliseconds to consider the changes
 set encoding=utf-8       " The encoding should be utf-8 to activate the font icons
@@ -46,6 +46,7 @@ set nohlsearch           " No highlight words after search
 set laststatus=2         " Always show the status bar
 set guicursor=           " Use block cursor in insert mode
 set clipboard+=unnamedplus " Use system clipboard
+set bg=light
 
 "#####################################################
 "################       PLUGINS       ################
@@ -135,7 +136,7 @@ nnoremap <S-h> :tabfirst<CR>
 nnoremap <S-l> :tablast<CR>
 
 " Select all
-nnoremap <C-a> gg<S-v><S-g>
+nnoremap <leader>a gg<S-v><S-g>
 
 " Comment
 nnoremap <C-_> <Plug>CommentaryLinej
@@ -186,7 +187,7 @@ let g:airline_symbols.linenr = ''
 autocmd BufWritePre * let currPos = getpos(".")
 autocmd BufWritePre * %s/\s\+$//e
 autocmd BufWritePre * %s/\n\+\%$//e
-autocmd BufWritePre *.[ch] %s/\%$/\r/e
+autocmd BufWritePre *.[ch] %s/\%$/\r/e " add trailing newline for ANSI C standard
 autocmd BufWritePre * cal cursor(currPos[1], currPos[2])
 
 " Custom tabstop for html, css, javascript
