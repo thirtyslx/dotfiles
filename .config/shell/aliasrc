@@ -73,10 +73,10 @@ alias \
 # Adding flags
 alias \
         df="df -h" \
-        free="free -m" \
         lynx="lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss -vikeys" \
         ncmpcpp="ncmpcpp ncmpcpp_directory=$HOME/.config/ncmpcpp/" \
         mocp="mocp -M ~/.config/moc -O MOCDir=~/.config/moc"
+        # free="free -m" \
         # mocp="mocp -M "$XDG_CONFIG_HOME"/moc -O MOCDir="$XDG_CONFIG_HOME"/moc"
 
 # ps
@@ -167,7 +167,7 @@ alias merge="xrdb -merge ~/.Xresources"
 alias rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash"
 
 # Make multiple directorys at once
-alias mkdir="mkdir -p"
+alias mkdir="mkdir -pv"
 
 # Copy the last command
 alias lc='echo "$(history | head -2 | sed "s/  [0-9]*  //;2d")" > /tmp/cmdoutput && cat /tmp/cmdoutput | xsel -b && notify-send "Terminal" "Last Command Copied"'
@@ -202,8 +202,10 @@ alias clangg="clang++ --std=c++20 -O3 -fsanitize=address,undefined -Wall -Wextra
 # Short command for pushing configs
 cfg() { config add "$1"; config commit -m "$2" ; }
 
-alias hst="history 1 -1 | cut -c 8- | sort | uniq | fzf | tr -d '\n' | xclip -sel c"
-alias ec="editconfig --fzf"
+# alias hst="history 1 -1 | cut -c 8- | sort | uniq | fzf | tr -d '\n' | xclip -sel c"
+hst() { [ -f "$HISTFILE" ] && awk '!seen[$0]++' "$HISTFILE" | tac | fzf | tr -d '\n' | xclip -sel c ;}
+# alias ec="editconfig --fzf"
+alias ce="editconfig --fzf"
 
 #alias sxiv="devour sxiv"
 #alias mpv="devour mpv"
@@ -217,7 +219,7 @@ alias qa="~/.config/qtile/autostart.sh"
 alias sl="cd ~/.config/suckless         && ls -a --color=always"
 alias rr="cd ~/.local/src              && ls -a --color=always"
 alias cf="cd ~/.config                  && ls -a --color=always"
-
+alias tex="cd ~/dox/latex                  && ls -a --color=always"
 
 alias o="xdg-open"
 alias ss="sudo systemctl"
@@ -231,9 +233,13 @@ alias pyenv="[ ! -d venv ] && python -m venv venv ; . ./venv/bin/activate ; pip 
 alias pyreq="[ ! -f requirements.txt ] && echo 'requirements.txt not found' && return 1 ; [ -d venv ] && ./venv/bin/pip install -r requirements.txt -U pip || echo 'venv no found' && return 1"
 alias pygenreq="[ -d venv ] && ./venv/bin/pip freeze > requirements.txt"
 alias pyall="pyenv && pyreq"
-se() { $EDITOR ~/.local/bin/"$(find ~/.local/bin/ -type f -printf '%P\n' | fzf)" ;}
+se() { $EDITOR ~/.local/bin/"$(find ~/.local/bin/ -type f,l -printf '%P\n' | fzf)" ;}
 enable() { [ -d "/etc/runit/sv/$1" ] && sudo ln -s "/etc/runit/sv/$1" /run/runit/service/ ;}
-disable() { [ -L "$1" ] && sudo rm -f "/run/runit/service/$1" ;}
+disable() { [ -L "$1" ] && sudo unlink "/run/runit/service/$1" ;}
+alias z=zathura
+alias sudo="sudo "  # make sudo work with aliases
+last() { [ -f "$HISTFILE" ] && tail -n2 "$HISTFILE" | head -n1 | tr -d '\n' | xclip -sel c ;}
+alias ccat="highlight --out-format=ansi"
 
 # Backup
 bak() { cp -rf "$1" "$1.bak" ; }
