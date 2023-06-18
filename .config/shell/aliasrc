@@ -4,270 +4,75 @@
 # Use $XINITRC variable if file exists.
 [ -f "$XINITRC" ] && alias startx="startx $XINITRC"
 
+# change vim to neovim if installed
+[ -x "$(command -v nvim)" ] && alias vim="nvim"
+
 # Sudo not required for some system commands
 for command in mount umount sv pacman updatedb su shutdown poweroff reboot; do
 	alias $command="sudo $command"
 done; unset command
 
-# Navigation up
-alias \
-        ..="cd .."  \
-        .2="cd ../.." \
-        .3="cd ../../.." \
-        .4="cd ../../../.." \
-        .5="cd ../../../.."
-
-# vim and emacs
-alias \
-        vim="nvim" \
-        em="/usr/bin/emacs -nw" \
-        emacs="emacsclient -c -a 'emacs'" \
-        doomsync="~/.emacs.d/bin/doom sync" \
-        doomdoctor="~/.emacs.d/bin/doom doctor" \
-        doomupgrade="~/.emacs.d/bin/doom upgrade" \
-        doompurge="~/.emacs.d/bin/doom purge"
-
-# Changing ls
-alias \
-        ls="ls -h --color=auto --group-directories-first" \
-        la="ls -Ah --color=auto --group-directories-first" \
-        ll="ls -hl --color=auto --group-directories-first" \
-        l.="exa -a | egrep '^\.'" \
-        els="exa --icons --color=always --group-directories-first" \
-        ela="exa -a --icons --color=always --group-directories-first" \
-        lt="exa -aT --level=2 --color=always --group-directories-first"
-        # lt="ls -R" \
-
-# pacman and yay
-alias \
-        psyu="sudo pacman -Syu" \
-        psyyu="sudo pacman -Syyu" \
-        yaysua="yay -Sua --noconfirm" \
-        yaysyu="yay -Syu --noconfirm" \
-        parsua="paru -Sua --noconfirm" \
-        parsyu="paru -Syu --noconfirm" \
-        unlock="sudo rm /var/lib/pacman/db.lck" \
-        cleanup="sudo pacman -Rns (pacman -Qtdq)"
-
-# get fastest mirrors
-alias \
-        mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist" \
-        mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist" \
-        mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist" \
-        mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
-
-# Colorize output
-alias \
-        grep="grep --color=auto" \
-        egrep="egrep --color=auto" \
-        fgrep="fgrep --color=auto" \
-        pacman="pacman --color always" \
-        ip="ip -color=always"
-
-# confirm before overwriting something
-alias \
-        cp="cp -iv" \
-        mv="mv -iv" \
-        rm="rm -Iv"
-
-# Adding flags
-alias \
-        df="df -h" \
-        lynx="lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss -vikeys" \
-        ncmpcpp="ncmpcpp ncmpcpp_directory=$HOME/.config/ncmpcpp/" \
-        mocp="mocp -M ~/.config/moc -O MOCDir=~/.config/moc"
-        # free="free -m" \
-        # mocp="mocp -M "$XDG_CONFIG_HOME"/moc -O MOCDir="$XDG_CONFIG_HOME"/moc"
-
-# ps
-alias \
-        psa="ps auxf" \
-        psgrep="ps aux | grep -v grep | grep -i -e VSZ -e" \
-        psmem="ps auxf | sort -nr -k 4" \
-        pscpu="ps auxf | sort -nr -k 3"
-
-# git
-alias \
-        add="git add" \
-        addup="git add -u" \
-        addall="git add ." \
-        branch="git branch" \
-        checkout="git checkout" \
-        clone="git clone" \
-        commit="git commit -m" \
-        fetch="git fetch" \
-        pull="git pull origin" \
-        push="git push origin" \
-        stat="git status" \
-        newtag="git tag -a"
-        # tag="git tag" \
-
-# yt-dlp
-alias \
-        yta-aac="yt-dlp --extract-audio --audio-format aac " \
-        yta-best="yt-dlp --extract-audio --audio-format best " \
-        yta-flac="yt-dlp --extract-audio --audio-format flac " \
-        yta-m4a="yt-dlp --extract-audio --audio-format m4a " \
-        yta-mp3="yt-dlp --extract-audio --audio-format mp3 " \
-        yta-opus="yt-dlp --extract-audio --audio-format opus " \
-        yta-vorbis="yt-dlp --extract-audio --audio-format vorbis " \
-        yta-wav="yt-dlp --extract-audio --audio-format wav " \
-        ytv-best="yt-dlp -f bestvideo+bestaudio " \
-        yt="yt-dlp -f bestvideo+bestaudio " \
-        yta="yt-dlp --extract-audio --audio-quality 0 --audio-format opus --add-metadata -o '%(artist)s - %(title)s.%(ext)s'" \
-        ytap="yt-dlp --extract-audio --audio-quality 0 --audio-format opus --add-metadata -o '%(playlist)s/%(playlist_index)02d. %(artist)s - %(title)s.%(ext)s'"
-
-# Switch between shells
-alias \
-        tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'" \
-        tozsh="sudo chsh  $USER -s /bin/zsh && echo 'Now log out.'" \
-        tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
-
-# Source shell configs
-alias \
-        sb="source ~/.bashrc" \
-        sz="source ~/.config/zsh/.zshrc" \
-        sf="source ~/.config/fish/config.fish"
-
-# Switch between display managers
-alias \
-        tolightdm="sudo pacman -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings --noconfirm --needed ; sudo systemctl enable lightdm.service -f ; echo 'Lightm is active - reboot now'" \
-        tosddm="sudo pacman -S sddm --noconfirm --needed ; sudo systemctl enable sddm.service -f ; echo 'Sddm is active - reboot now'" \
-        toly="sudo pacman -S ly --noconfirm --needed ; sudo systemctl enable ly.service -f ; echo 'Ly is active - reboot now'" \
-        togdm="sudo pacman -S gdm --noconfirm --needed ; sudo systemctl enable gdm.service -f ; echo 'Gdm is active - reboot now'"
-
-# Common commands that are too long
-alias \
-        e="$EDITOR" \
-        v="vim" \
-        ka="killall" \
-        xp="xprop WM_CLASS" \
-        p="sudo pacman" \
-        g="git" \
-        s="startx" \
-        c="clear" \
-        r="ranger"
-
-# root privileges
-alias doas="doas --"
-
-# get error messages from journalctl
-alias jctl="journalctl -p 3 -xb"
-
-# gpg encryption
-# verify signature for isos
-alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
-# receive the key of a developer
-alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
-
-# Merge Xresources
-alias merge="xrdb -merge ~/.Xresources"
-
-# the terminal rickroll
-alias rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash"
-
-# Make multiple directorys at once
-alias mkdir="mkdir -pv"
-
-# Copy the last command
-alias lc='echo "$(history | head -2 | sed "s/  [0-9]*  //;2d")" > /tmp/cmdoutput && cat /tmp/cmdoutput | xsel -b && notify-send "Terminal" "Last Command Copied"'
-
-# Userlist
-alias userlist="< /etc/passwd | column -t -s : | sort"
-
-# Update grub config
-alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-
-# Check for new fonts
-alias update-fc="sudo fc-cache -fv"
-
-# Hardware information
-alias hw="hwinfo --short"
-
-# Check audio server
-alias audio="pactl info | grep 'Server Name'"
-
-# Largest files in directory
-alias ducks="du -cks * | sort -rn | head"
-
-# Logout
-alias logout="pkill -KILL -u $USER"
-
-# Remove all latex temp files
-alias latexclear="rm -f *.aux; rm -f *.log; rm -f *.toc"
-
-# clang compiler
-alias clangg="clang++ --std=c++20 -O3 -fsanitize=address,undefined -Wall -Wextra -Werror"
-
-# Short command for pushing configs
-cfg() { config add "$1"; config commit -m "$2" ; }
-
-# alias hst="history 1 -1 | cut -c 8- | sort | uniq | fzf | tr -d '\n' | xclip -sel c"
-hst() { [ -f "$HISTFILE" ] && awk '!seen[$0]++' "$HISTFILE" | tac | fzf | tr -d '\n' | xclip -sel c ;}
-# alias ec="editconfig --fzf"
-alias ce="editconfig --fzf"
-
-#alias sxiv="devour sxiv"
-#alias mpv="devour mpv"
-#alias zathura="devour zathura"
-#alias lowriter="devour lowriter"
-#alias neofetch="neofetch --ascii_distro arch"
-# Fast cds
-alias sc="cd ~/.local/bin               && ls -a --color=always"
-alias bm="vim ~/.local/share/bookmarks"
-alias qa="~/.config/qtile/autostart.sh"
-alias sl="cd ~/.config/suckless         && ls -a --color=always"
-alias rr="cd ~/.local/src              && ls -a --color=always"
-alias cf="cd ~/.config                  && ls -a --color=always"
-alias tex="cd ~/dox/latex                  && ls -a --color=always"
-
-alias o="xdg-open"
-alias ss="sudo systemctl"
-alias cal="cal -m"
-# close aria2 after download
-alias aria2c="aria2c --seed-time=0"
-alias y="xclip -sel c"
-alias P="xclip -o"
-alias ex="extract"
-alias pyenv="[ ! -d venv ] && python -m venv venv ; . ./venv/bin/activate ; pip install -U pip"
-alias pyreq="[ ! -f requirements.txt ] && echo 'requirements.txt not found' && return 1 ; [ -d venv ] && ./venv/bin/pip install -r requirements.txt -U pip || echo 'venv no found' && return 1"
-alias pygenreq="[ -d venv ] && ./venv/bin/pip freeze > requirements.txt"
-alias pyall="pyenv && pyreq"
-se() { $EDITOR ~/.local/bin/"$(find ~/.local/bin/ -type f,l -printf '%P\n' | fzf)" ;}
 enable() { [ -d "/etc/runit/sv/$1" ] && sudo ln -s "/etc/runit/sv/$1" /run/runit/service/ ;}
 disable() { [ -L "$1" ] && sudo unlink "/run/runit/service/$1" ;}
-alias z=zathura
-alias sudo="sudo "  # make sudo work with aliases
+
+bak() { cp -rf "$1" "$1.bak" ;}
+hst() { [ -f "$HISTFILE" ] && awk '!seen[$0]++' "$HISTFILE" | tac | fzf | tr -d '\n' | xclip -sel c ;}
 last() { [ -f "$HISTFILE" ] && tail -n2 "$HISTFILE" | head -n1 | tr -d '\n' | xclip -sel c ;}
+
+venv() {
+    venv="${1:-venv}"
+    [ -d "$venv" ] && . "$venv/bin/activate" && return 0
+    python -m venv "$venv"
+    . "$venv/bin/activate"
+    pip install -U pip
+    [ -f "requirements.txt" ] && pip install -r "requirements.txt"
+}
+
+se() { $EDITOR ~/.local/bin/"$(find ~/.local/bin/ -type f,l -printf '%P\n' | fzf)" ;}
+
+# Verbosity and sane flags
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias rm="rm -Iv"
+alias mkdir="mkdir -pv"
+alias bc="bc -lq"
+alias yt="yt-dlp -i --add-metadata -f bestvideo+bestaudio"
+alias yta="yt-dlp -i --add-metadata --extract-audio --audio-quality=0 --audio-format=opus -o '%(artist)s - %(title)s.%(ext)s'" \
+alias sudo="sudo "  # make sudo work with aliases
+alias cal="cal -m"
+alias aria2c="aria2c --seed-time=0"
+
+# Colorize output when possible
+alias ls="ls -hN --color=auto --group-directories-first"
+alias la="ls -Ah --color=auto --group-directories-first"
+alias ll="ls -hl --color=auto --group-directories-first"
+alias grep="grep --color=auto"
+alias ip="ip --color=auto"
 alias ccat="highlight --out-format=ansi"
 
-# Backup
-bak() { cp -rf "$1" "$1.bak" ; }
+# Abbreviations for common commands that are too long
+alias p="pacman"
+alias g="git"
+alias ka="killall"
+alias e="$EDITOR"
+alias v="$EDITOR"
+alias o="xdg-open"
+alias y="xclip -sel c"
+alias P="xclip -o"
+alias z="zathura"
 
-shrinkpdf() {
-gs  -q -dNOPAUSE -dBATCH -dSAFER \
-    -sDEVICE=pdfwrite \
-    -dCompatibilityLevel=1.4 \
-    -dPDFSETTINGS=/screen \
-    -dEmbedAllFonts=true \
-    -dSubsetFonts=true \
-    -dColorImageDownsampleType=/Bicubic \
-    -dColorImageResolution=150 \
-    -dGrayImageDownsampleType=/Bicubic \
-    -dGrayImageResolution=150 \
-    -dMonoImageDownsampleType=/Bicubic \
-    -dMonoImageResolution=150 \
-    -sOutputFile="compressed-$1" \
-     "$1"
-mv "compressed-$1" "$1" -i
-}
+# Other aliases
+alias psmem="ps auxf | sort -nr -k 4 | head"
+alias pscpu="ps auxf | sort -nr -k 3 | head"
+alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+alias xp="xprop WM_CLASS"
+alias gu="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+alias ce="editconfig --fzf"
 
-ren() { perl-rename 's/$1//g' -- * ; }
-
-countdown() {
-    n=$1
-    while [ "$n" -gt 0 ]; do
-        echo "$n" | figlet -c | lolcat && sleep 1
-        n=$((n-1))
-    done
-}
+# Fast cds (this totally needs to be a script)
+alias bm="vim ~/.local/share/bookmarks"
+alias sc=" cd ~/.local/bin            && ls -a --color=always"
+alias sl=" cd ~/.config/suckless      && ls -a --color=always"
+alias rr=" cd ~/.local/src            && ls -a --color=always"
+alias cf=" cd ~/.config               && ls -a --color=always"
+alias tex="cd ~/dox/latex             && ls -a --color=always"
