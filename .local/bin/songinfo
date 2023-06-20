@@ -1,26 +1,19 @@
 #!/bin/sh
 
-msgTag="songinfo"
+# Sends notification with information and cover art
+# of current song in mpd. Supports caching.
+# I have ncmpcpp run this whenever song changes.
 
-music_dir="$HOME/mus"
-previewdir="${XDG_CONFIG_HOME:-$HOME/.config}/ncmpcpp/previews"
-filename="$(mpc --format "$music_dir"/%file% current)"
-previewname="$previewdir/$(mpc --format %album% current | base64).png"
-mkdir -p "$previewdir"
-# echo "previewname='$previewname'"
-# echo "previewdir='$previewdir'"
+musicdir="$HOME/music"
+artdir="${XDG_CACHE_HOME:-$HOME/.cache}/coverarts"
 
-[ -e "$previewname" ] || ffmpeg -y -i "$filename" -an -vf scale=128:128 "$previewname" > /dev/null 2>&1
-# [ -e "$previewname" ] && echo "preview exists" || echo "no preview!"
-# [ -e "$previewname" ] || ffmpeg -i "$" -filter:v scale=-2:250 -an output.jpeg
+eval "$(mpc -f "file='$musicdir/%file%' artist='%artist%' title='%title%' album='%album%'" current)"
+art="$artdir/$(printf '%s' "$album" | base64 -i | tr -d '/').jpg"
 
-[ -f "$previewname" ] || previewname=""
-pgrep -x dunst > /dev/null 2>&1 && dunstctl close-all
-format='\n%title%\n%artist%\n\[ %album% \]'
-format='\n%title%\n%artist% \[ %album% \]'
-format='\n%artist% \[ %album% \]'
-title="$(mpc --format '%title%' current)"
-album="$(mpc --format '%album%' current)"
-[ ! "$title" = "$album" ] && format='\n%artist% - %album%' || format="\n%title%\n%artist%"
-# [ "$(mpc -f '%title%')" = "$(mpc -f '%album%')" ] && notify-send "Now Playing" "$(mpc --format '%title%\n%artist%' current)" -i "$previewname" ||
-notify-send -h string:x-dunst-stack-tag:$msgTag "$title" "$(mpc --format "$format" current)" -i "$previewname" # -t 100000
+[ ! -d "$artdir" ] && mkdir -p "$artdir"
+[ ! -f "$art" ] && [ -n "$album" ] && ffmpeg -i "$file" -an -vf scale=128:128 "$art" >/dev/null 2>&1
+[ ! -f "$art" ] && unset art    # fallback if ffmpeg did not generate cover art
+
+notify="$artist"
+[ "$title" != "$album" ] && notify="$notify\n<i>$album</i>"
+notify-send -h "string:x-dunst-stack-tag:${0##*/}" ${art:+-i "$art"} "$title" "$notify"
