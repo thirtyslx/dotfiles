@@ -3,22 +3,23 @@
 
 msgTag="volumechange"
 msgApp="volumechange"
-vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
+vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | tr -d '.')"
 
-echo "$vol" | grep "\[MUTED\]" && \
-    notify-send -a "$msgApp" -t 1000 -h "string:x-dunst-stack-tag:$msgTag" "Volume: 🔇 muted" && exit 0
+notify() {
+    echo "$1"
+    notify-send ${2:+$2} -t 1000 -h "string:x-dunst-stack-tag:$msgTag" "vol: $1"
+}
 
-vol="$(echo "$vol" | cut -d' ' -f2 | tr -d '.')"
-vol="${vol#0}" ; vol="${vol#0}"     # for ommitting `0` when value is lower than 10
+echo "$vol" | grep -q "MUTED" && notify "🔇 muted" && exit 0
 
-if [ "$vol" -ge 70 ]; then
-    icon="🔊"
-elif [ "$vol" -ge 30 ]; then
-    icon="🔉"
-elif [ "$vol" -ge 1 ]; then
-    icon="🔈"
-else
-    icon="🔇"
-fi
+vol="${vol#Volume: }"
+vol=$(printf "%.0f" "$vol")
 
-notify-send -a "$msgApp" -t 1000 -h "string:x-dunst-stack-tag:$msgTag" -h "int:value:$vol" "Volume: $icon$vol%"
+case 1 in
+    $((vol >= 70)) ) icon="🔊" ;;
+    $((vol >= 30)) ) icon="🔉" ;;
+    $((vol >= 1)) ) icon="🔈" ;;
+    * ) icon="🔇" ;;
+esac
+
+notify "$icon$vol%" "-h int:value:$vol"
