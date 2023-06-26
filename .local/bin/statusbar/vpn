@@ -1,0 +1,4 @@
+#!/bin/sh
+
+[ -n "$(sudo wg show all)" ] && icon=" on"
+echo "Vpn: ${icon:-🔓off}"
