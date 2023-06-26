@@ -1,0 +1,3 @@
+#!/bin/sh
+
+printf "📦%d" "$(pacman -Qu | wc -l)"
