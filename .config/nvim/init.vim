@@ -46,7 +46,8 @@ set nohlsearch           " No highlight words after search
 set laststatus=2         " Always show the status bar
 set guicursor=           " Use block cursor in insert mode
 set clipboard+=unnamedplus " Use system clipboard
-set bg=light
+set bg=light    " dark theme
+set mousemodel=extend   " disable right click menu
 
 "#####################################################
 "################       PLUGINS       ################
@@ -55,7 +56,7 @@ set bg=light
 call plug#begin('~/.config/nvim/plugged/')
 
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
@@ -83,7 +84,7 @@ call plug#end()
 "#####################################################
 
 " Map leader to Space
-let mapleader = " "
+let mapleader = ","
 
 " Map Caps Lock to Escape
 " au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
@@ -130,10 +131,8 @@ map <leader>t :TagbarToggle<CR>
 " Tabs
 nnoremap <C-t> :tabnew<CR>
 nnoremap <C-c> :tabclose<CR>
-nnoremap <S-k> :tabnext<CR>
-nnoremap <S-j> :tabprev<CR>
-nnoremap <S-h> :tabfirst<CR>
-nnoremap <S-l> :tablast<CR>
+nnoremap <S-h> :tabprev<CR>
+nnoremap <S-l> :tabnext<CR>
 
 " Select all
 nnoremap <leader>a gg<S-v><S-g>
@@ -149,6 +148,7 @@ map <leader>s :!clear && shellcheck -x %<CR>
 "
 " Replace all is aliased to S.
 nnoremap S :%s//g<Left><Left>
+" vmap S :s//g<Left><Left>
 
 " Compile document, be it groff/LaTeX/markdown/etc.
 map <leader>c :w! \| !compiler "%:p"<CR>
@@ -204,6 +204,9 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 " Dwm autocompile
 " autocmd BufWritePost ~/.local/src/dwm/config.h !cd ~/.local/src/dwm/; echo ""; sudo make install
 
+" Restart blocks on config change
+" autocmd BufWritePost ~/.local/bin/pblocks !killall pblocks ; PATH="$PATH:$HOME/.local/src/voidrice/.local/bin/statusbar" setsid -f pblocks
+"
 " Runs a script that cleans out tex build files whenever I close out of a .tex file.
 autocmd VimLeave *.tex !texclear %
 
@@ -261,3 +264,8 @@ if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autolo
 	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
 	autocmd VimEnter * PlugInstall
 endif
+
+lua << EOF
+-- Mappings.
+local opts = { noremap=true, silent=true }
+EOF
