@@ -29,7 +29,8 @@ remaps &
 # Replace capslock with escape
 #xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' &
 setbg &
-xsetroot -name "thirtysix's dwm build [36\"]" &
+# xsetroot -name "thirtysix's dwm build [36\"]" &
+pblocks &
 mpd &
 #startup &
 # startup &
