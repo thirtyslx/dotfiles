@@ -1,0 +1,34 @@
+#!/bin/sh
+
+var() { eval "echo \"$1: \$$1\"" ;}
+
+destdir="${DESTDIR:-$1}"
+destdir="${destdir%/}"
+shift
+[ ! -d "$destdir" ] && exit 1
+
+for obj; do
+    [ ! -f "$obj" ] && [ ! -d "$obj" ] && { echo "no such file or directory: $obj" >&2 ; continue ;}
+    obj="$(readlink -f "$obj")"
+    # obj="${obj%/}"
+    dir="${obj%/*}"
+    basename="${obj##*/}"
+    [ -d "$obj" ] && obj="$obj/"
+    # var obj
+    case "$dir" in
+        "$HOME"*)
+            newdir="${dir#"$HOME"}"
+            ;;
+        *) newdir="rootfs/${dir#/}" ;;
+    esac
+    newdir="$destdir/${newdir#/}"
+    newdir="${newdir%/}"
+    # var newdir
+    echo "mkdir -p \"$newdir\""
+    mkdir -p "$newdir"
+    # [ -f "$destdir/$basename" ] && echo "skipping: $obj"
+    # base="$destdir/$basename"
+    # var base
+    echo "cp -rfv \"$obj\" \"$newdir\""
+    cp -rfv "$obj" "$newdir"
+done
