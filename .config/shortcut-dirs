@@ -5,7 +5,7 @@ rr      ~/.local/src
 cf      ~/.config
 tex     ~/dox/latex
 h       ~/
-dox     ~/dox
-dl      ~/dl
-pix     ~/pix
-vids    ~/vids
+d       ~/dox
+D       ~/dl
+pp      ~/pix
+vv      ~/vids
