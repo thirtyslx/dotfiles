@@ -1,0 +1,5 @@
+# you can leave comments with '#'
+sc      ~/.local/bin
+rr      ~/.local/src
+cf      ~/.config
+tex     ~/dox/latex

@@ -4,7 +4,8 @@ PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magent
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
 setopt interactive_comments
-setopt incappendhistory     # save history from all session
+setopt inc_append_history     # save history from all session
+setopt hist_ignore_dups
 
 # History in config directory:
 HISTSIZE=10000000
@@ -12,9 +13,9 @@ SAVEHIST=10000000
 HISTFILE="${XDG_CONFIG_HOME:-$HOME/.config}/zsh/history"
 
 # Load aliases and shortcuts if existent.
-# [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc"
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shortcuts" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shortcuts"
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/nameddirs" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/nameddirs"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
-# [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc"
 
 # Basic auto/tab complete:
 autoload -U compinit
@@ -46,6 +47,10 @@ lfcd () {
 }
 bindkey -s '^o' '^ulfcd\n'
 
+# move by word with ctrl + arrow keys
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
 # Calculator
 bindkey -s '^a' '^ubc -lq\n'
 
@@ -53,6 +58,7 @@ bindkey -s '^a' '^ubc -lq\n'
 fcd() {
     dir="$(find "$HOME" -type d 2>/dev/null | fzf)"
     [ -d "$dir" ] && cd "$dir" || return 1
+    unset dir
 }
 bindkey -s '^f' '^ufcd\n'
 

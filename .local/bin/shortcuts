@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# Script to generate shortcuts (aliases) to
+# different files and directories
+
+shortcut_dirs="$HOME/.config/shortcut-dirs"
+shortcut_files="$HOME/.config/shortcut-files"
+
+shellrc="$HOME/.config/shortcuts"
+nameddirs="$HOME/.config/nameddirs"
+
+shellrc_data=""
+nameddirs_data=""
+# clear destination files
+:>"$shellrc"
+:>"$nameddirs"
+
+while read -r shortcut dir ; do
+    [ "$shortcut" != "${shortcut#\#}" ] && continue
+    [ -z "$shortcut" ] && [ -z "$dir" ] && continue
+    case "$dir" in
+        "~/"*) dir="$HOME/${dir#"~/"}" ;;
+    esac
+    echo "alias $shortcut='cd \"$dir\" && ls -A --color=auto'" >> "$shellrc"
+    # shellrc_data="${shellrc_data}\nalias $shortcut='cd \"$dir\" && ls -A --color=auto'"
+    echo "hash -d $shortcut=\"$dir\"" >> "$nameddirs"
+    # nameddirs_data="${nameddirs_data}\nhash -d $shortcut=\"$dir\""
+done < "$shortcut_dirs"
+
+while read -r shortcut file ; do
+    [ "$shortcut" != "${shortcut#\#}" ] && continue
+    [ -z "$shortcut" ] && [ -z "$file" ] && continue
+    case "$file" in
+        "~/"*) file="$HOME/${file#"~/"}" ;;
+    esac
+    echo "alias $shortcut='$EDITOR $file'" >> "$shellrc"
+    # shellrc_data="${shellrc_data}\nalias $shortcut='$EDITOR $file'"
+done < "$shortcut_files"
+
+# echo "$shellrc_data" > "$shellrc"
+# echo "$nameddirs_data" > "$nameddirs"

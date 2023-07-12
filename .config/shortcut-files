@@ -1,0 +1,11 @@
+# you can leave comments with '#'
+
+cfa     ~/.config/shell/aliasrc
+cfz     ~/.config/zsh/.zshrc
+cfv     ~/.config/nvim/init.vim
+cfk     ~/.config/sxhkd/sxhkdrc
+cfb     ~/.local/src/pblocks/config
+
+bm      ~/.local/share/bookmarks
+bf      ~/.config/shortcut-files
+bd      ~/.config/shortcut-dirs
