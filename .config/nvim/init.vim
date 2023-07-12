@@ -194,9 +194,9 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 " Dwm autocompile
 " autocmd BufWritePost ~/.local/src/dwm/config.h !cd ~/.local/src/dwm/; echo ""; sudo make install
 
-" Restart blocks on config change
-" autocmd BufWritePost ~/.local/bin/pblocks !killall pblocks ; PATH="$PATH:$HOME/.local/src/voidrice/.local/bin/statusbar" setsid -f pblocks
-"
+" Restart pblocks on config change
+autocmd BufWritePost ~/.local/src/pblocks/config !killall pblocks ; setsid -f pblocks
+
 " Runs a script that cleans out tex build files whenever I close out of a .tex file.
 autocmd VimLeave *.tex !texclear %
 
