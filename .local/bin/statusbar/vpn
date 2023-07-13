@@ -1,4 +1,19 @@
 #!/bin/sh
 
-[ -n "$(sudo wg show all)" ] && icon=" on"
-echo "Vpn: ${icon:-🔓off}"
+if [ "$1" = "toggle" ]; then
+    { sudo wg-quick up myvpn && notify-send -h string:x-dunst-stack-tag:"vpn" "Vpn: ON" ;} || \
+    { sudo wg-quick down myvpn && notify-send -h string:x-dunst-stack-tag:"vpn" "Vpn: OFF" ;}
+    pkill -x -RTMIN+4 pblocks
+    exit 0
+fi
+
+status="$(sudo -n wg show all 2>&1)"
+if [ "$status" = "sudo: a password is required" ]; then
+    icon=
+elif [ -n "$status" ]; then
+    icon=" on"
+else
+    icon="🔓off"
+fi
+
+echo "${icon:+Vpn: $icon}"
