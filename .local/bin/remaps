@@ -1,10 +1,12 @@
 #!/bin/sh
 
-# Set keyboard layout
+# Configure keyboard layouts
 setxkbmap us,ru -option 'grp:alt_shift_toggle'
-# Swap capslock with super
-setxkbmap -option 'caps:super'
-# Swap caps and escape if pressed once
-killall xcape 2>/dev/null ; xcape -e 'Super_L=Escape'
+# Map caps lock key to super and map menu key to right super
+setxkbmap -option 'caps:super,altwin:menu_win'
+# When caps lock is pressed once, treat it as escape
+# Swap tilde and escape (useful for 65% keyboards)
+killall xcape 2>/dev/null ; xcape -e 'Super_L=grave' # xcape -e 'Super_L=Escape'
+xmodmap -e "keycode 9 = grave" -e "keycode 49 = Escape"
 # Decrease key repeat delay to 300ms and increase key repeat rate to 30 per second
 xset r rate 300 30
